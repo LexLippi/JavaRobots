@@ -120,6 +120,15 @@ public class GameVisualizer extends JPanel
             return max;
         return value;
     }
+
+    private static double changeLimits(double value, double min, double max)
+    {
+        if (value < min)
+            return max;
+        if (value > max)
+            return min;
+        return value;
+    }
     
     private void moveRobot(double velocity, double angularVelocity, double duration)
     {
@@ -139,9 +148,11 @@ public class GameVisualizer extends JPanel
         {
             newY = m_robotPositionY + velocity * duration * Math.sin(m_robotDirection);
         }
+        newX = changeLimits(newX, 0, getWidth());
+        newY = changeLimits(newY, 0, getHeight());
         m_robotPositionX = newX;
         m_robotPositionY = newY;
-        double newDirection = asNormalizedRadians(m_robotDirection + angularVelocity * duration); 
+        double newDirection = asNormalizedRadians(m_robotDirection + angularVelocity * duration);
         m_robotDirection = newDirection;
     }
 
