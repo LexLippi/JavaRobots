@@ -51,22 +51,22 @@ public class MainApplicationFrame extends JFrame
     private void handleClosing() {
         int answer = showWarningMessage();
         if (answer == JOptionPane.YES_OPTION) {
-            Logger.info("Quit");
+            Logger.info(bundle.getString("getQuit"));
             System.exit(0);
         }
         else{
-            Logger.info("Don't quit");
+            Logger.info(bundle.getString("getNotQuit"));
         }
     }
 
     private int showWarningMessage() {
-        String[] buttonLabels = new String[] {"Yes", "No"};
+        String[] buttonLabels = new String[] {bundle.getString("accept"), bundle.getString("not accept")};
         String defaultOption = buttonLabels[0];
         Icon icon = null;
 
         return JOptionPane.showOptionDialog(this,
-                "Do you really want to exit?",
-                "Warning",
+                bundle.getString("getWantExit"),
+                bundle.getString("getWarning"),
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
                 icon,
