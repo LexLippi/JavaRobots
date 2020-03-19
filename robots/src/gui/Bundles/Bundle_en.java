@@ -8,6 +8,8 @@ public class Bundle_en extends ListResourceBundle {
             {"systemModeKey", "System diagram"},
             {"universalModeKey", "Universal diagram"},
             {"testsKey", "Tests"},
+            {"menuKey", "Menu"},
+            {"getExit", "Exit"},
             {"getMessageKey", "Message in log"},
             {"messageKey", "New string"},
             {"protocolKey", "Protocol works"},

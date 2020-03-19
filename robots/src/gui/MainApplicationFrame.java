@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -36,10 +38,40 @@ public class MainApplicationFrame extends JFrame
         gameWindow.setSize(400,  400);
         addWindow(gameWindow);
 
-
-
         setJMenuBar(generateMenuBar());
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                handleClosing();
+            }
+        });
+    }
+
+    private void handleClosing() {
+        int answer = showWarningMessage();
+        if (answer == JOptionPane.YES_OPTION) {
+            Logger.info("Quit");
+            System.exit(0);
+        }
+        else{
+            Logger.info("Don't quit");
+        }
+    }
+
+    private int showWarningMessage() {
+        String[] buttonLabels = new String[] {"Yes", "No"};
+        String defaultOption = buttonLabels[0];
+        Icon icon = null;
+
+        return JOptionPane.showOptionDialog(this,
+                "Do you really want to exit?",
+                "Warning",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                icon,
+                buttonLabels,
+                defaultOption);
     }
     
     protected LogWindow createLogWindow()
@@ -62,6 +94,15 @@ public class MainApplicationFrame extends JFrame
     private JMenuBar generateMenuBar()
     {
         JMenuBar menuBar = new JMenuBar();
+        var mainMenu = createMenu(bundle.getString("menuKey"), KeyEvent.VK_M, "Главное меню");
+        {
+            mainMenu.add(createMenuItem(bundle.getString("getExit"),
+                    (event) -> {
+                        handleClosing();
+                    }
+            ));
+        }
+
         var lookAndFeelMenu = createMenu(bundle.getString("modeKey"), KeyEvent.VK_V,
                 "Управление режимом отображения приложения");
         {
@@ -91,6 +132,7 @@ public class MainApplicationFrame extends JFrame
             ));
         }
 
+        menuBar.add(mainMenu);
         menuBar.add(lookAndFeelMenu);
         menuBar.add(testMenu);
         return menuBar;

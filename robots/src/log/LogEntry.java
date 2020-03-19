@@ -11,14 +11,8 @@ public class LogEntry
         m_logLevel = logLevel;
     }
     
-    public String getMessage()
-    {
-        return m_strMessage;
-    }
+    public String getMessage() {return m_strMessage;}
     
-    public LogLevel getLevel()
-    {
-        return m_logLevel;
-    }
+    public LogLevel getLevel() {return m_logLevel;}
 }
 

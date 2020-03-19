@@ -26,6 +26,7 @@ public class Menu {
         menu.setMnemonic(KeyEvent.VK_D);
         menu.add(createMenuItem("New", KeyEvent.VK_N));
         menu.add(createMenuItem("Quit", KeyEvent.VK_Q));
+        menu.add(createMenuItem("Exit", KeyEvent.VK_E));
     }
 
     private JMenuItem createMenuItem(String text, int keyEvent)
@@ -34,7 +35,7 @@ public class Menu {
         menuItem.setMnemonic(keyEvent);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(keyEvent, ActionEvent.ALT_MASK));
         menuItem.setActionCommand(text.toLowerCase());
-        // menuItem.addActionListener(this);
+        //menuItem.addActionListener(this);
         return menuItem;
     }
 }

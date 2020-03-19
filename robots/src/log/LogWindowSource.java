@@ -86,4 +86,9 @@ public class LogWindowSource
     {
         return m_messages;
     }
+
+    public void clear()
+    {
+        m_messages.clear();
+    }
 }
