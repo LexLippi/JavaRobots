@@ -66,9 +66,9 @@ public class MainApplicationFrame extends JFrame
 
         return JOptionPane.showOptionDialog(this,
                 "Do you really want to exit?",
-                "Warning",
+                "Question",
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE,
+                JOptionPane.QUESTION_MESSAGE,
                 icon,
                 buttonLabels,
                 defaultOption);
@@ -98,6 +98,7 @@ public class MainApplicationFrame extends JFrame
         {
             mainMenu.add(createMenuItem(bundle.getString("getExit"),
                     (event) -> {
+                        Logger.info("Forced Exit");
                         handleClosing();
                     }
             ));
