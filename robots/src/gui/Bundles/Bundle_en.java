@@ -26,7 +26,8 @@ public class Bundle_en extends ListResourceBundle {
             {"accept", "Yes"},
             {"not accept", "No"},
             {"getWarning", "Warning"},
-            {"getWantExit",  "Do you really want to exit?"}
+            {"getWantExit",  "Do you really want to exit?"},
+            {"getWantCloseWindow", "Do you really want to close this window?"}
     };
 
     @Override

@@ -20,6 +20,8 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
 {
     private LogWindowSource m_logSource;
     private TextArea m_logContent;
+    private ClosingHandler closingHandler = new ClosingHandler();
+    private LogWindow window = this;
 
     public LogWindow(LogWindowSource logSource, ResourceBundle bundle)
     {
@@ -36,35 +38,9 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
         updateLogContent();
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {
-                handleClosing(e);
+                closingHandler.handleClosing(window, e, bundle);
             }
         });
-    }
-
-    private void handleClosing(InternalFrameEvent e) {
-        int answer = showWarningMessage();
-        if (answer == JOptionPane.YES_OPTION) {
-            Logger.info("Close log window");
-            this.dispose();
-        }
-        else{
-            Logger.info("Don't close log window");
-        }
-    }
-
-    private int showWarningMessage() {
-        String[] buttonLabels = new String[] {"Yes", "No"};
-        String defaultOption = buttonLabels[0];
-        Icon icon = null;
-
-        return JOptionPane.showOptionDialog(this,
-                "Do you really want to close log window?",
-                "Question",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                icon,
-                buttonLabels,
-                defaultOption);
     }
 
     private void updateLogContent()

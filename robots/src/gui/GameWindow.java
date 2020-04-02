@@ -11,7 +11,9 @@ import javax.swing.event.InternalFrameEvent;
 
 public class GameWindow extends JInternalFrame
 {
+    private GameWindow window = this;
     private final GameVisualizer m_visualizer;
+    private ClosingHandler closingHandler = new ClosingHandler();
     public GameWindow(ResourceBundle bundle)
     {
         super(bundle.getString("gameFieldKey"), true, true, true, true);
@@ -23,34 +25,8 @@ public class GameWindow extends JInternalFrame
         pack();
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {
-                handleClosing(e);
+                closingHandler.handleClosing(window, e, bundle);
             }
         });
-    }
-
-    private void handleClosing(InternalFrameEvent e) {
-        int answer = showWarningMessage();
-        if (answer == JOptionPane.YES_OPTION) {
-            Logger.info("Close game");
-            this.dispose();
-        }
-        else{
-            Logger.info("Don't close game");
-        }
-    }
-
-    private int showWarningMessage() {
-        String[] buttonLabels = new String[] {"Yes", "No"};
-        String defaultOption = buttonLabels[0];
-        Icon icon = null;
-
-        return JOptionPane.showOptionDialog(this,
-                "Do you really want to exit?",
-                "Question",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                icon,
-                buttonLabels,
-                defaultOption);
     }
 }

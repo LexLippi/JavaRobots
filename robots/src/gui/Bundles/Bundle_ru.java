@@ -26,7 +26,8 @@ public class Bundle_ru extends ListResourceBundle {
             {"accept", "Да"},
             {"not accept", "Нет"},
             {"getWarning", "Предупреждение"},
-            {"getWantExit",  "Вы действительно хотите выйти?"}
+            {"getWantExit",  "Вы действительно хотите выйти?"},
+            {"getWantCloseWindow", "Вы действительно хотите закрыть это окно?"}
     };
 
     @Override
