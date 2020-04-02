@@ -20,7 +20,13 @@ public class Bundle_en extends ListResourceBundle {
             {"frameTitlePane.restoreButtonText", "Restore"},
             {"frameTitlePane.maximizeButtonText", "Maximize"},
             {"frameTitlePane.moveButtonText", "Move"},
-            {"frameTitlePane.sizeButtonText", "Size"}
+            {"frameTitlePane.sizeButtonText", "Size"},
+            {"getQuit", "Quit"},
+            {"getNotQuit", "Don't quit"},
+            {"accept", "Yes"},
+            {"not accept", "No"},
+            {"getWarning", "Warning"},
+            {"getWantExit",  "Do you really want to exit?"}
     };
 
     @Override

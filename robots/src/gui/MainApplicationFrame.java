@@ -18,7 +18,10 @@ public class MainApplicationFrame extends JFrame
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
     private final ResourceBundle bundle;
-    
+    private ClosingHandler closingHandler = new ClosingHandler();
+
+
+
     public MainApplicationFrame(ResourceBundle bundle) {
         //Make the big window be indented 50 pixels from each edge
         //of the screen.
@@ -43,36 +46,11 @@ public class MainApplicationFrame extends JFrame
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                handleClosing();
+                closingHandler.handleClosing(bundle);
             }
         });
     }
 
-    private void handleClosing() {
-        int answer = showWarningMessage();
-        if (answer == JOptionPane.YES_OPTION) {
-            Logger.info("Quit");
-            System.exit(0);
-        }
-        else{
-            Logger.info("Don't quit");
-        }
-    }
-
-    private int showWarningMessage() {
-        String[] buttonLabels = new String[] {"Yes", "No"};
-        String defaultOption = buttonLabels[0];
-        Icon icon = null;
-
-        return JOptionPane.showOptionDialog(this,
-                "Do you really want to exit?",
-                "Question",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                icon,
-                buttonLabels,
-                defaultOption);
-    }
     
     protected LogWindow createLogWindow()
     {
@@ -99,7 +77,7 @@ public class MainApplicationFrame extends JFrame
             mainMenu.add(createMenuItem(bundle.getString("getExit"),
                     (event) -> {
                         Logger.info("Forced Exit");
-                        handleClosing();
+                        closingHandler.handleClosing(bundle);
                     }
             ));
         }

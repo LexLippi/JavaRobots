@@ -8,6 +8,8 @@ public class Bundle_ru extends ListResourceBundle {
             {"systemModeKey", "Системная схема"},
             {"universalModeKey", "Универсальная схема"},
             {"testsKey", "Тесты"},
+            {"menuKey", "Меню"},
+            {"getExit", "Выход"},
             {"getMessageKey", "Сообщение в лог"},
             {"messageKey", "Новая строка"},
             {"protocolKey", "Протокол работает"},
@@ -18,7 +20,13 @@ public class Bundle_ru extends ListResourceBundle {
             {"frameTitlePane.restoreButtonText", "Восстановить"},
             {"frameTitlePane.maximizeButtonText", "Увеличить"},
             {"frameTitlePane.moveButtonText", "Переместить"},
-            {"frameTitlePane.sizeButtonText", "Изменить размер"}
+            {"frameTitlePane.sizeButtonText", "Изменить размер"},
+            {"getQuit", "Выйти"},
+            {"getNotQuit", "Отмена"},
+            {"accept", "Да"},
+            {"not accept", "Нет"},
+            {"getWarning", "Предупреждение"},
+            {"getWantExit",  "Вы действительно хотите выйти?"}
     };
 
     @Override
