@@ -1,2 +1,7 @@
 /bin/
 /.settings/
+/.project
+/.classpath
+/.gitignore
+/.idea/
+/target/
