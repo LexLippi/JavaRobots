@@ -18,14 +18,15 @@ import log.Logger;
 
 public class LogWindow extends JInternalFrame implements LogChangeListener
 {
+    private LogWindow window = this;
     private LogWindowSource m_logSource;
     private TextArea m_logContent;
     private ClosingHandler closingHandler = new ClosingHandler();
-    private LogWindow window = this;
 
     public LogWindow(LogWindowSource logSource, ResourceBundle bundle)
     {
         super(bundle.getString("logTitleKey"), true, true, true, true);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         m_logSource = logSource;
         m_logSource.registerListener(this);
         m_logContent = new TextArea("");
@@ -38,7 +39,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
         updateLogContent();
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {
-                closingHandler.handleClosing(window, e, bundle);
+                closingHandler.handleClosing(window, e, bundle, 2);
             }
         });
     }

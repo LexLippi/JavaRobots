@@ -10,7 +10,7 @@ import javax.swing.UIManager;
 public class RobotsProgram
 {
     public static void main(String[] args) {
-      var locale = new Locale("en", "US");
+      var locale = new Locale("ru", "RUS");
       var bundle = ResourceBundle.getBundle("gui.Bundles.Bundle", locale);
       try {
         UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");

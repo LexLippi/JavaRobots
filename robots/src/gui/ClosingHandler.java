@@ -19,25 +19,25 @@ public class ClosingHandler {
         }
     }
 
-    public void handleClosing(GameWindow window, InternalFrameEvent e, ResourceBundle bundle) {
+    public void handleClosing(JInternalFrame window, InternalFrameEvent e, ResourceBundle bundle, int type) {
         int answer = showWarningMessage(bundle, 2);
-        if (answer == JOptionPane.YES_OPTION) {
-            Logger.info("Close game");
-            window.dispose();
+        String yesMessage;
+        String noMessage;
+        if (type == 1) {
+            yesMessage = "Close game window";
+            noMessage = "Don't close game window";
         }
         else{
-            Logger.info("Don't close game");
+            yesMessage = "Close log window";
+            noMessage = "Don't close log window";
         }
-    }
 
-    public void handleClosing(LogWindow window, InternalFrameEvent e, ResourceBundle bundle) {
-        int answer = showWarningMessage(bundle, 3);
         if (answer == JOptionPane.YES_OPTION) {
-            Logger.info("Close log window");
+            Logger.info(yesMessage);
             window.dispose();
         }
         else{
-            Logger.info("Don't close log window");
+            Logger.info(noMessage);
         }
     }
 

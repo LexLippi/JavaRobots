@@ -25,7 +25,7 @@ public class GameWindow extends JInternalFrame
         pack();
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {
-                closingHandler.handleClosing(window, e, bundle);
+                closingHandler.handleClosing(window, e, bundle,1 );
             }
         });
     }
