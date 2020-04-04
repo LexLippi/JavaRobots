@@ -49,9 +49,8 @@ public class LogWindowSource
     public void append(LogLevel logLevel, String strMessage)
     {
         LogEntry entry = new LogEntry(logLevel, strMessage);
-        if (!m_messages.offer(entry)) {
+        while (!m_messages.offer(entry)) {
             m_messages.poll();
-            m_messages.offer(entry);
         }
         LogChangeListener [] activeListeners = m_activeListeners;
         if (activeListeners == null)
@@ -83,10 +82,8 @@ public class LogWindowSource
             return Collections.emptyList();
         }
         int indexTo = Math.min(startFrom + count, m_messages.size());
-        List<LogEntry> list = Collections.synchronizedList(new ArrayList<LogEntry>(m_messages));
-        synchronized (list) {
-            return list.subList(startFrom, indexTo);
-        }
+        ArrayList<LogEntry> list = new ArrayList<LogEntry>(m_messages);
+        return list.subList(startFrom, indexTo);
     }
 
     public Iterable<LogEntry> all()
