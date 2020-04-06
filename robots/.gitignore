@@ -5,3 +5,9 @@
 /.gitignore
 /.idea/
 /target/
+.gitignore
+.idea
+bin
+.project
+.classpath
+target
