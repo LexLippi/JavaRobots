@@ -1,22 +1,17 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.TextArea;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import log.LogChangeListener;
+import log.LogEntry;
+import log.LogWindowSource;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import javax.swing.plaf.PanelUI;
+import java.awt.*;
+import java.io.Serializable;
+import java.util.ResourceBundle;
 
-import log.LogChangeListener;
-import log.LogEntry;
-import log.LogWindowSource;
-import log.Logger;
-
-public class LogWindow extends JInternalFrame implements LogChangeListener
+public class LogWindow extends JInternalFrame implements LogChangeListener, Serializable
 {
     private LogWindow window = this;
     private LogWindowSource m_logSource;
@@ -44,6 +39,21 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
         });
     }
 
+    public void setLogSource(LogWindowSource logSource) {
+        var entries = m_logSource.all();
+        m_logSource = logSource;
+        m_logSource.registerListener(this);
+        for (var entry: entries) {
+            m_logSource.append(entry.getLevel(), entry.getMessage());
+        }
+        addInternalFrameListener(new InternalFrameAdapter() {
+            public void internalFrameClosing(InternalFrameEvent e) {
+                closingHandler.handleClosing(window, e, ResourceBundle.getBundle("gui.Bundles.Bundle", getLocale()), 2);
+            }
+        });
+    }
+
+
     private void updateLogContent()
     {
         StringBuilder content = new StringBuilder();
@@ -64,6 +74,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
     @Override
     public void onLogChanged()
     {
+        System.out.println("here Alex");
         EventQueue.invokeLater(this::updateLogContent);
     }
 }

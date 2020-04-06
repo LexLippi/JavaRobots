@@ -1,25 +1,21 @@
 package gui;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import log.Logger;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Arrays;
-import java.util.Locale;
+import java.io.*;
 import java.util.ResourceBundle;
-
-import javax.swing.*;
-
-import log.Logger;
 
 public class MainApplicationFrame extends JFrame
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
     private final ResourceBundle bundle;
     private ClosingHandler closingHandler = new ClosingHandler();
-
 
 
     public MainApplicationFrame(ResourceBundle bundle) {
@@ -32,24 +28,59 @@ public class MainApplicationFrame extends JFrame
             screenSize.width  - inset*2,
             screenSize.height - inset*2);
         setContentPane(desktopPane);
-        
-        LogWindow logWindow = createLogWindow();
-        addWindow(logWindow);
 
-        GameWindow gameWindow = new GameWindow(bundle);
-        gameWindow.setSize(400,  400);
-        addWindow(gameWindow);
+        var frames = openSavedWindows();
+        if (frames != null) {
+            for (var frame: frames) {
+                if (frame.getClass().getSimpleName().equals("LogWindow")) {
+                    var logWindow = (LogWindow) frame;
+                    logWindow.setLogSource(Logger.getDefaultLogSource());
+                }
+                if (frame.getClass().getSimpleName().equals("GameWindow")) {
+                    var gameWindow = (GameWindow) frame;
+                    gameWindow.setMetadata();
+                }
+                addWindow(frame);
+            }
+        }
+        else {
+            LogWindow logWindow = createLogWindow();
+            addWindow(logWindow);
+
+            GameWindow gameWindow = new GameWindow(bundle);
+            gameWindow.setSize(400,  400);
+            addWindow(gameWindow);
+        }
 
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
+                saveWindowStates();
                 closingHandler.handleClosing(bundle);
             }
         });
     }
 
+    private JInternalFrame[] openSavedWindows() {
+        var filename = "window.dat";
+        try (var ois = new ObjectInputStream(new FileInputStream(filename))) {
+            return (JInternalFrame[])ois.readObject();
+        } catch (IOException | ClassNotFoundException | ClassCastException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return null;
+    }
+
+    private void saveWindowStates() {
+        var filename = "window.dat";
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(desktopPane.getAllFrames());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
     
     protected LogWindow createLogWindow()
     {
@@ -105,6 +136,7 @@ public class MainApplicationFrame extends JFrame
         {
             testMenu.add(createMenuItem(bundle.getString("getMessageKey"),
                     (event) -> {
+                    System.out.println("here");
                     Logger.debug(bundle.getString("messageKey"));
                     }
             ));

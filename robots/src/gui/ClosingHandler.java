@@ -4,9 +4,10 @@ import log.Logger;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameEvent;
+import java.io.Serializable;
 import java.util.ResourceBundle;
 
-public class ClosingHandler {
+public class ClosingHandler implements Serializable {
 
     public void handleClosing(ResourceBundle bundle) {
         int answer = showWarningMessage(bundle, 1);

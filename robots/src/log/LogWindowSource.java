@@ -1,20 +1,13 @@
 package log;
 
+import gui.LogWindow;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
-/**
- * Что починить:
- * 1. Этот класс порождает утечку ресурсов (связанные слушатели оказываются
- * удерживаемыми в памяти)
- * 2. Этот класс хранит активные сообщения лога, но в такой реализации он 
- * их лишь накапливает. Надо же, чтобы количество сообщений в логе было ограничено 
- * величиной m_iQueueLength (т.е. реально нужна очередь сообщений 
- * ограниченного размера) 
- */
-public class LogWindowSource
+public class LogWindowSource implements Serializable
 {
     private int m_iQueueLength;
     private ArrayBlockingQueue<LogEntry> m_messages;
@@ -64,8 +57,11 @@ public class LogWindowSource
                 }
             }
         }
+        System.out.println(m_activeListeners);
         for (LogChangeListener listener : activeListeners)
         {
+            ((LogWindow)listener).onLogChanged();
+            listener.onLogChanged();
             listener.onLogChanged();
         }
     }

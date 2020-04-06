@@ -1,21 +1,17 @@
 package gui;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.JPanel;
-
-public class GameVisualizer extends JPanel
+public class GameVisualizer extends JPanel implements Serializable
 {
-    private final Timer m_timer = initTimer();
+    private transient Timer m_timer = initTimer();
     
     private static Timer initTimer() 
     {
@@ -35,6 +31,37 @@ public class GameVisualizer extends JPanel
     
     public GameVisualizer() 
     {
+        m_timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                onRedrawEvent();
+            }
+        }, 0, 50);
+        m_timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                onModelUpdateEvent();
+            }
+        }, 0, 10);
+        addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                setTargetPosition(e.getPoint());
+                repaint();
+            }
+        });
+        setDoubleBuffered(true);
+    }
+
+    public void check() {
+        m_timer = initTimer();
+
         m_timer.schedule(new TimerTask()
         {
             @Override
