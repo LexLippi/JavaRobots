@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+import java.rmi.UnexpectedException;
 import java.util.ResourceBundle;
 
 public class MainApplicationFrame extends JFrame
@@ -32,13 +33,20 @@ public class MainApplicationFrame extends JFrame
         var frames = openSavedWindows();
         if (frames != null) {
             for (var frame: frames) {
-                if (frame.getClass().getSimpleName().equals("LogWindow")) {
-                    var logWindow = (LogWindow) frame;
-                    logWindow.setLogSource(Logger.getDefaultLogSource());
-                }
-                if (frame.getClass().getSimpleName().equals("GameWindow")) {
-                    var gameWindow = (GameWindow) frame;
-                    gameWindow.setMetadata();
+                switch (frame.getClass().getSimpleName()) {
+                    case "LogWindow" : {
+                        var logWindow = (LogWindow) frame;
+                        logWindow.setMetadata(Logger.getDefaultLogSource(), bundle);
+                        break;
+                    }
+                    case "GameWindow" : {
+                        var gameWindow = (GameWindow) frame;
+                        gameWindow.setMetadata(bundle);
+                        break;
+                    }
+                    default: {
+                        throw new IllegalStateException();
+                    }
                 }
                 addWindow(frame);
             }

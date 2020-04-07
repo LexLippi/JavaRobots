@@ -28,11 +28,15 @@ public class GameWindow extends JInternalFrame implements Serializable
         pack();
     }
 
-    public void setMetadata() {
-        m_visualizer.check();
+    public void setMetadata(ResourceBundle bundle) {
+        m_visualizer.setMetadata();
+        createNewClosingHandler(bundle);
+    }
+
+    private void createNewClosingHandler(ResourceBundle bundle) {
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {
-                closingHandler.handleClosing(window, e, ResourceBundle.getBundle("gui.Bundles.Bundle", getLocale()),1 );
+                closingHandler.handleClosing(window, e, bundle, 1);
             }
         });
     }

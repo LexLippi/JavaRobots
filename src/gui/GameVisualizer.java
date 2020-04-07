@@ -59,9 +59,8 @@ public class GameVisualizer extends JPanel implements Serializable
         setDoubleBuffered(true);
     }
 
-    public void check() {
+    public void setMetadata() {
         m_timer = initTimer();
-
         m_timer.schedule(new TimerTask()
         {
             @Override

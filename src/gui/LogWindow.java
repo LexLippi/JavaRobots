@@ -39,20 +39,27 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Seri
         });
     }
 
-    public void setLogSource(LogWindowSource logSource) {
+    public void setMetadata(LogWindowSource logSource, ResourceBundle bundle) {
+        createNewLogSourceWithOldMessages(logSource);
+        createNewClosingHandler(bundle);
+    }
+
+    private void createNewLogSourceWithOldMessages(LogWindowSource logSource) {
         var entries = m_logSource.all();
         m_logSource = logSource;
         m_logSource.registerListener(this);
         for (var entry: entries) {
             m_logSource.append(entry.getLevel(), entry.getMessage());
         }
+    }
+
+    private void createNewClosingHandler(ResourceBundle bundle) {
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {
-                closingHandler.handleClosing(window, e, ResourceBundle.getBundle("gui.Bundles.Bundle", getLocale()), 2);
+                closingHandler.handleClosing(window, e, bundle, 2);
             }
         });
     }
-
 
     private void updateLogContent()
     {
