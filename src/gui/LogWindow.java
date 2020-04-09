@@ -34,7 +34,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Seri
         updateLogContent();
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {
-                closingHandler.handleClosing(window, e, bundle, 2);
+                closingHandler.handleClosing(window, e, bundle, ClosingHandler.ClosingType.LOG);
             }
         });
     }
@@ -56,7 +56,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Seri
     private void createNewClosingHandler(ResourceBundle bundle) {
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {
-                closingHandler.handleClosing(window, e, bundle, 2);
+                closingHandler.handleClosing(window, e, bundle, ClosingHandler.ClosingType.LOG);
             }
         });
     }
@@ -81,7 +81,6 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Seri
     @Override
     public void onLogChanged()
     {
-        System.out.println("here Alex");
         EventQueue.invokeLater(this::updateLogContent);
     }
 }

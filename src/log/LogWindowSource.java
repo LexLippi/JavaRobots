@@ -57,7 +57,6 @@ public class LogWindowSource implements Serializable
                 }
             }
         }
-        System.out.println(m_activeListeners);
         for (LogChangeListener listener : activeListeners)
         {
             ((LogWindow)listener).onLogChanged();

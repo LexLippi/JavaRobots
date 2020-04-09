@@ -1,7 +1,6 @@
 package gui;
 
 import log.Logger;
-import org.testng.reporters.jq.Main;
 
 import javax.swing.*;
 import java.util.ResourceBundle;
@@ -28,7 +27,7 @@ public class LoadingHandler {
                 }
                 mainFrame.addWindow(frame);
             }
-            Logger.info("Load a save");
+            Logger.info(bundle.getString("loadMessage"));
         }
         else{
             LogWindow logWindow = mainFrame.createLogWindow();
@@ -37,7 +36,7 @@ public class LoadingHandler {
             GameWindow gameWindow = new GameWindow(bundle);
             gameWindow.setSize(400,  400);
             mainFrame.addWindow(gameWindow);
-            Logger.info("Don't load a save");
+            Logger.info(bundle.getString("notLoadMessage"));
         }
     }
 

@@ -22,7 +22,7 @@ public class GameWindow extends JInternalFrame implements Serializable
         getContentPane().add(panel);
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {
-                closingHandler.handleClosing(window, e, bundle,1 );
+                closingHandler.handleClosing(window, e, bundle, ClosingHandler.ClosingType.GAME );
             }
         });
         pack();
@@ -36,7 +36,7 @@ public class GameWindow extends JInternalFrame implements Serializable
     private void createNewClosingHandler(ResourceBundle bundle) {
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {
-                closingHandler.handleClosing(window, e, bundle, 1);
+                closingHandler.handleClosing(window, e, bundle, ClosingHandler.ClosingType.GAME);
             }
         });
     }
