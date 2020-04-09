@@ -27,7 +27,12 @@ public class Bundle_en extends ListResourceBundle {
             {"not accept", "No"},
             {"getWarning", "Warning"},
             {"getWantExit",  "Do you really want to exit?"},
-            {"getWantCloseWindow", "Do you really want to close this window?"}
+            {"getWantCloseWindow", "Do you really want to close this window?"},
+            {"getLanguage", "Language"},
+            {"getRussian", "Russian"},
+            {"getEnglish", "English"},
+            {"getNotification", "Notification"},
+            {"getSaveMessage", "You have a save. Do you want to load it?"}
     };
 
     @Override

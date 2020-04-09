@@ -3,6 +3,7 @@ package gui;
 import log.Logger;
 
 import javax.swing.*;
+import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,12 +12,14 @@ import java.awt.event.WindowEvent;
 import java.io.*;
 import java.rmi.UnexpectedException;
 import java.util.ResourceBundle;
+import java.util.Locale;
 
 public class MainApplicationFrame extends JFrame
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
-    private final ResourceBundle bundle;
+    private ResourceBundle bundle;
     private ClosingHandler closingHandler = new ClosingHandler();
+    private LoadingHandler loadingHandler = new LoadingHandler();
 
 
     public MainApplicationFrame(ResourceBundle bundle) {
@@ -31,34 +34,6 @@ public class MainApplicationFrame extends JFrame
         setContentPane(desktopPane);
 
         var frames = openSavedWindows();
-        if (frames != null) {
-            for (var frame: frames) {
-                switch (frame.getClass().getSimpleName()) {
-                    case "LogWindow" : {
-                        var logWindow = (LogWindow) frame;
-                        logWindow.setMetadata(Logger.getDefaultLogSource(), bundle);
-                        break;
-                    }
-                    case "GameWindow" : {
-                        var gameWindow = (GameWindow) frame;
-                        gameWindow.setMetadata(bundle);
-                        break;
-                    }
-                    default: {
-                        throw new IllegalStateException();
-                    }
-                }
-                addWindow(frame);
-            }
-        }
-        else {
-            LogWindow logWindow = createLogWindow();
-            addWindow(logWindow);
-
-            GameWindow gameWindow = new GameWindow(bundle);
-            gameWindow.setSize(400,  400);
-            addWindow(gameWindow);
-        }
 
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -68,7 +43,22 @@ public class MainApplicationFrame extends JFrame
                 saveWindowStates();
                 closingHandler.handleClosing(bundle);
             }
+            public void windowOpened(WindowEvent e) {
+                loadingHandler.handleLoading(MainApplicationFrame.this, frames, bundle);
+            }
         });
+    }
+
+    private void setRussian(){
+        ResourceBundle bundle = ResourceBundle.getBundle("gui.Bundles.Bundle", new Locale("ru", "RU"));
+        saveWindowStates();
+        RobotsProgram.restart(bundle, this);
+    }
+
+    private void setEnglish(){
+        ResourceBundle bundle = ResourceBundle.getBundle("gui.Bundles.Bundle", new Locale("en", "EN"));
+        saveWindowStates();
+        RobotsProgram.restart(bundle, this);
     }
 
     private JInternalFrame[] openSavedWindows() {
@@ -118,6 +108,22 @@ public class MainApplicationFrame extends JFrame
                         closingHandler.handleClosing(bundle);
                     }
             ));
+            var languageMenu = createMenu(bundle.getString("getLanguage"), KeyEvent.VK_L, "Смена языка");
+            {
+                languageMenu.add(createMenuItem(bundle.getString("getRussian"),
+                        (event) -> {
+                            setRussian();
+                        }
+                        ));
+
+                languageMenu.add(createMenuItem(bundle.getString("getEnglish"),
+                        (event) -> {
+                            setEnglish();
+                        }
+                ));
+            }
+            mainMenu.add(languageMenu);
+
         }
 
         var lookAndFeelMenu = createMenu(bundle.getString("modeKey"), KeyEvent.VK_V,

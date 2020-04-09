@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 public class RobotsProgram
 {
     public static void main(String[] args) {
-      var locale = new Locale("ru", "RU");
+      var locale = new Locale(System.getProperty("user.language"), System.getProperty("user.country"));
       var bundle = ResourceBundle.getBundle("gui.Bundles.Bundle", locale);
       try {
         //UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -37,4 +37,15 @@ public class RobotsProgram
         frame.setVisible(true);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
       });
-    }}
+    }
+
+    public static void restart(ResourceBundle bundle, MainApplicationFrame mainFrame){
+      mainFrame.dispose();
+      SwingUtilities.invokeLater(() -> {
+        MainApplicationFrame frame = new MainApplicationFrame(bundle);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+      });
+    }
+}

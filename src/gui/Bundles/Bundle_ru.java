@@ -27,7 +27,12 @@ public class Bundle_ru extends ListResourceBundle {
             {"not accept", "Нет"},
             {"getWarning", "Предупреждение"},
             {"getWantExit",  "Вы действительно хотите выйти?"},
-            {"getWantCloseWindow", "Вы действительно хотите закрыть это окно?"}
+            {"getWantCloseWindow", "Вы действительно хотите закрыть это окно?"},
+            {"getLanguage", "Язык"},
+            {"getRussian", "Русский"},
+            {"getEnglish", "Английский"},
+            {"getNotification", "Напоминание"},
+            {"getSaveMessage", "У вас есть сохранение. Хотите его загрузить?"}
     };
 
     @Override
