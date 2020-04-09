@@ -27,12 +27,11 @@ public class ClosingHandler implements Serializable {
         }
     }
 
-<<<<<<< HEAD
     public void handleClosing(JInternalFrame window, InternalFrameEvent e, ResourceBundle bundle, ClosingType type) {
         int answer = showWarningMessage(bundle, Context.CLOSE);
         String yesMessage = "";
         String noMessage = "";
-        switch (type){
+        switch (type) {
             case GAME:
                 yesMessage = "Close game window";
                 noMessage = "Don't close game window";
@@ -41,21 +40,7 @@ public class ClosingHandler implements Serializable {
                 yesMessage = "Close log window";
                 noMessage = "Don't close log window";
                 break;
-=======
-    public void handleClosing(JInternalFrame window, InternalFrameEvent e, ResourceBundle bundle, int type) {
-        int answer = showWarningMessage(bundle, 2);
-        String yesMessage;
-        String noMessage;
-        if (type == 1) {
-            yesMessage = bundle.getString("closeGameWindow");
-            noMessage = bundle.getString("notCloseGameWindow");
         }
-        else{
-            yesMessage = bundle.getString("closeLogWindow");
-            noMessage = bundle.getString("notCloseLogWindow");
->>>>>>> 2d3ae69392e979a73641dcb385655bf336d8d7c4
-        }
-
         if (answer == JOptionPane.YES_OPTION) {
             Logger.info(yesMessage);
             window.dispose();
