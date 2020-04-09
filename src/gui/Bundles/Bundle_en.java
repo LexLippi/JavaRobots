@@ -32,7 +32,14 @@ public class Bundle_en extends ListResourceBundle {
             {"getRussian", "Russian"},
             {"getEnglish", "English"},
             {"getNotification", "Notification"},
-            {"getSaveMessage", "You have a save. Do you want to load it?"}
+            {"getSaveMessage", "You have a save. Do you want to load it?"},
+            {"exit", "Forced exit"},
+            {"loadMessage", "Load a save"},
+            {"notLoadMessage", "Don't load a save"},
+            {"closeGameWindow", "Close game window"},
+            {"closeLogWindow", "Close log window"},
+            {"notCloseGameWindow", "Don't close game window"},
+            {"notCloseLogWindow", "Don't close log window"}
     };
 
     @Override

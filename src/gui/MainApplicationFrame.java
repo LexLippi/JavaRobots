@@ -104,7 +104,7 @@ public class MainApplicationFrame extends JFrame
         {
             mainMenu.add(createMenuItem(bundle.getString("getExit"),
                     (event) -> {
-                        Logger.info("Forced Exit");
+                        Logger.info(bundle.getString("exit"));
                         closingHandler.handleClosing(bundle);
                     }
             ));
@@ -150,7 +150,6 @@ public class MainApplicationFrame extends JFrame
         {
             testMenu.add(createMenuItem(bundle.getString("getMessageKey"),
                     (event) -> {
-                    System.out.println("here");
                     Logger.debug(bundle.getString("messageKey"));
                     }
             ));

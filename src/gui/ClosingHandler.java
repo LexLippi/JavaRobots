@@ -25,12 +25,12 @@ public class ClosingHandler implements Serializable {
         String yesMessage;
         String noMessage;
         if (type == 1) {
-            yesMessage = "Close game window";
-            noMessage = "Don't close game window";
+            yesMessage = bundle.getString("closeGameWindow");
+            noMessage = bundle.getString("notCloseGameWindow");
         }
         else{
-            yesMessage = "Close log window";
-            noMessage = "Don't close log window";
+            yesMessage = bundle.getString("closeLogWindow");
+            noMessage = bundle.getString("notCloseLogWindow");
         }
 
         if (answer == JOptionPane.YES_OPTION) {

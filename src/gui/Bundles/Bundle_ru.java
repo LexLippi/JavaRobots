@@ -32,7 +32,14 @@ public class Bundle_ru extends ListResourceBundle {
             {"getRussian", "Русский"},
             {"getEnglish", "Английский"},
             {"getNotification", "Напоминание"},
-            {"getSaveMessage", "У вас есть сохранение. Хотите его загрузить?"}
+            {"getSaveMessage", "У вас есть сохранение. Хотите его загрузить?"},
+            {"exit", "Принудительный выход"},
+            {"loadMessage", "Загружено сохранение"},
+            {"notLoadMessage", "Не загружено сохранение"},
+            {"closeGameWindow", "Закрыто окно игры"},
+            {"closeLogWindow", "Закрыто окно логов"},
+            {"notCloseGameWindow", "Не закрыто окно игры"},
+            {"notCloseLogWindow", "Не закрыто окно логов"}
     };
 
     @Override
