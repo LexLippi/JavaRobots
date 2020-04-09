@@ -81,7 +81,6 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Seri
     @Override
     public void onLogChanged()
     {
-        System.out.println("here Alex");
         EventQueue.invokeLater(this::updateLogContent);
     }
 }

@@ -1,7 +1,6 @@
 package gui;
 
 import log.Logger;
-import org.testng.reporters.jq.Main;
 
 import javax.swing.*;
 import java.util.ResourceBundle;
