@@ -44,18 +44,4 @@ public class MusicPlayer {
         currentSong.stop();
         updateCurrentSong();
     }
-
-    public static void main(String[] args) throws InterruptedException {
-        var files = new File[] {new File("C:\\Users\\aleks\\Downloads\\Олег Газманов - Мои ясные дни (mp3cut.net).wav"),
-                new File("C:\\Users\\aleks\\Downloads\\Т9 - Вдох-выход (mp3cut.net).wav")};
-        var player = new MusicPlayer(files);
-        while (!player.songs.isEmpty()) {
-            player.play();
-            Thread.sleep(500);
-            player.skip();
-            Thread.sleep(500);
-            player.play();
-        }
-
-    }
 }
