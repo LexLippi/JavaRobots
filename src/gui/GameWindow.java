@@ -33,6 +33,10 @@ public class GameWindow extends JInternalFrame implements Serializable
         createNewClosingHandler(bundle);
     }
 
+    public void changeLanguage(ResourceBundle bundle){
+        this.setTitle(bundle.getString("gameFieldKey"));
+    }
+
     private void createNewClosingHandler(ResourceBundle bundle) {
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {

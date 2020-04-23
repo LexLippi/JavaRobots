@@ -1,15 +1,18 @@
 package gui;
 
+import log.LogWindowSource;
+import log.Logger;
+
 import javax.swing.*;
 import java.awt.*;
-import java.util.Locale;
 import java.util.ResourceBundle;
+
 
 public class RobotsProgram
 {
-    public static void main(String[] args) {
-      var locale = new Locale(System.getProperty("user.language"), System.getProperty("user.country"));
-      var bundle = ResourceBundle.getBundle("gui.Bundles.Bundle", locale);
+  private static ProgramPreferences prefs = new ProgramPreferences();
+  public static void main(String[] args) {
+      ResourceBundle bundle = prefs.getBundle();
       try {
         //UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
@@ -39,10 +42,16 @@ public class RobotsProgram
       });
     }
 
+    public static void changeBundle(ResourceBundle bundle){
+      prefs.setBundle(bundle);
+    }
+
     public static void restart(ResourceBundle bundle, MainApplicationFrame mainFrame){
+      changeBundle(bundle);
       mainFrame.dispose();
       SwingUtilities.invokeLater(() -> {
         MainApplicationFrame frame = new MainApplicationFrame(bundle);
+        Logger.getDefaultLogSource().clear();
         frame.pack();
         frame.setVisible(true);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);

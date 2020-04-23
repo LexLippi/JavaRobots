@@ -17,11 +17,13 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Seri
     private LogWindowSource m_logSource;
     private TextArea m_logContent;
     private ClosingHandler closingHandler = new ClosingHandler();
+    private ResourceBundle m_bundle;
 
     public LogWindow(LogWindowSource logSource, ResourceBundle bundle)
     {
         super(bundle.getString("logTitleKey"), true, true, true, true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        m_bundle = bundle;
         m_logSource = logSource;
         m_logSource.registerListener(this);
         m_logContent = new TextArea("");
@@ -39,9 +41,15 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Seri
         });
     }
 
+    public void changeLanguage(ResourceBundle nextBundle){
+        m_bundle = nextBundle;
+        this.setTitle(nextBundle.getString("logTitleKey"));
+        updateLogContent();
+    }
+
     public void setMetadata(LogWindowSource logSource, ResourceBundle bundle) {
-        createNewLogSourceWithOldMessages(logSource);
-        createNewClosingHandler(bundle);
+            createNewLogSourceWithOldMessages(logSource);
+            createNewClosingHandler(bundle);
     }
 
     private void createNewLogSourceWithOldMessages(LogWindowSource logSource) {
@@ -66,7 +74,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Seri
         StringBuilder content = new StringBuilder();
         for (LogEntry entry : m_logSource.all())
         {
-            content.append(entry.getMessage()).append("\n");
+            content.append(m_bundle.getString(entry.getMessage())).append("\n");
         }
         m_logContent.setText(content.toString());
         m_logContent.invalidate();

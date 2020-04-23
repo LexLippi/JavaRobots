@@ -14,11 +14,13 @@ public class LoadingHandler {
                     case "LogWindow" : {
                         var logWindow = (LogWindow) frame;
                         logWindow.setMetadata(Logger.getDefaultLogSource(), bundle);
+                        mainFrame.logWindow = logWindow;
                         break;
                     }
                     case "GameWindow" : {
                         var gameWindow = (GameWindow) frame;
                         gameWindow.setMetadata(bundle);
+                        mainFrame.gameWindow = gameWindow;
                         break;
                     }
                     default: {
@@ -27,19 +29,21 @@ public class LoadingHandler {
                 }
                 mainFrame.addWindow(frame);
             }
-            Logger.info(bundle.getString("loadMessage"));
+            Logger.info("loadMessage");
         }
         else{
-            LogWindow logWindow = mainFrame.createLogWindow();
-            mainFrame.addWindow(logWindow);
-
-            GameWindow gameWindow = new GameWindow(bundle);
-            gameWindow.setSize(400,  400);
-            mainFrame.addWindow(gameWindow);
-            Logger.info(bundle.getString("notLoadMessage"));
+            makeNewWindows(mainFrame, bundle);
         }
     }
 
+    public void makeNewWindows(MainApplicationFrame mainFrame, ResourceBundle bundle){
+        mainFrame.logWindow = mainFrame.createLogWindow();
+        mainFrame.addWindow(mainFrame.logWindow);
+        mainFrame.gameWindow = new GameWindow(bundle);
+        mainFrame.gameWindow.setSize(400,  400);
+        mainFrame.addWindow(mainFrame.gameWindow);
+        Logger.info("notLoadMessage");
+    }
 
     private int showSaveMessage(ResourceBundle bundle) {
         String[] buttonLabels = new String[] {bundle.getString("accept"), bundle.getString("not accept")};
