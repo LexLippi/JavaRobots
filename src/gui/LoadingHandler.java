@@ -10,20 +10,9 @@ public class LoadingHandler {
         int answer = showSaveMessage(bundle);
         if (answer == JOptionPane.YES_OPTION) {
             for (var frame: frames) {
-                switch (frame.getClass().getSimpleName()) {
-                    case "LogWindow" : {
-                        var logWindow = (LogWindow) frame;
-                        logWindow.setMetadata(Logger.getDefaultLogSource(), bundle);
-                        break;
-                    }
-                    case "GameWindow" : {
-                        var gameWindow = (GameWindow) frame;
-                        gameWindow.setMetadata(bundle);
-                        break;
-                    }
-                    default: {
-                        throw new IllegalStateException();
-                    }
+                ((Reopenable)frame).setMetadata(bundle);
+                if (frame.getClass().getSimpleName().equals("LogWindow")) {
+                    ((LogWindow)frame).createNewLogSourceWithOldMessages(Logger.getDefaultLogSource());
                 }
                 mainFrame.addWindow(frame);
             }

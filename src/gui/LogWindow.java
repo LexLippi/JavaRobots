@@ -11,10 +11,10 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 
-public class LogWindow extends JInternalFrame implements LogChangeListener, Serializable
+public class LogWindow extends JInternalFrame implements LogChangeListener, Serializable, Reopenable
 {
     private LogWindow window = this;
-    private LogWindowSource m_logSource;
+    private transient LogWindowSource m_logSource;
     private TextArea m_logContent;
     private ClosingHandler closingHandler = new ClosingHandler();
 
@@ -39,12 +39,11 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Seri
         });
     }
 
-    public void setMetadata(LogWindowSource logSource, ResourceBundle bundle) {
-        createNewLogSourceWithOldMessages(logSource);
+    public void setMetadata(ResourceBundle bundle) {
         createNewClosingHandler(bundle);
     }
 
-    private void createNewLogSourceWithOldMessages(LogWindowSource logSource) {
+    public void createNewLogSourceWithOldMessages(LogWindowSource logSource) {
         var entries = m_logSource.all();
         m_logSource = logSource;
         m_logSource.registerListener(this);
