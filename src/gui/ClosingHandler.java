@@ -19,11 +19,11 @@ public class ClosingHandler implements Serializable {
     public void handleClosing(ResourceBundle bundle) {
         int answer = showWarningMessage(bundle, Context.EXIT);
         if (answer == JOptionPane.YES_OPTION) {
-            Logger.info(bundle.getString("getQuit"));
+            Logger.info("getQuit");
             System.exit(0);
         }
         else{
-            Logger.info(bundle.getString("getNotQuit"));
+            Logger.info("getNotQuit");
         }
     }
 
@@ -33,12 +33,12 @@ public class ClosingHandler implements Serializable {
         String noMessage = "";
         switch (type) {
             case GAME:
-                yesMessage = "Close game window";
-                noMessage = "Don't close game window";
+                yesMessage = "closeGameWindow";
+                noMessage = "notCloseGameWindow";
                 break;
             case LOG:
-                yesMessage = "Close log window";
-                noMessage = "Don't close log window";
+                yesMessage = "closeLogWindow";
+                noMessage = "notCloseLogWindow";
                 break;
         }
         if (answer == JOptionPane.YES_OPTION) {

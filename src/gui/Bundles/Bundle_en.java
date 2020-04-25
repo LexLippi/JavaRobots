@@ -1,8 +1,9 @@
 package gui.Bundles;
 
+import java.io.Serializable;
 import java.util.ListResourceBundle;
 
-public class Bundle_en extends ListResourceBundle {
+public class Bundle_en extends ListResourceBundle implements Serializable{
     private Object[][] contents = {
             {"modeKey", "Display mode"},
             {"systemModeKey", "System diagram"},
@@ -39,7 +40,7 @@ public class Bundle_en extends ListResourceBundle {
             {"closeGameWindow", "Close game window"},
             {"closeLogWindow", "Close log window"},
             {"notCloseGameWindow", "Don't close game window"},
-            {"notCloseLogWindow", "Don't close log window"}
+            {"notCloseLogWindow", "Don't close log window"},
     };
 
     @Override

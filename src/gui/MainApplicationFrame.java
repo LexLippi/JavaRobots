@@ -3,14 +3,12 @@ package gui;
 import log.Logger;
 
 import javax.swing.*;
-import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
-import java.rmi.UnexpectedException;
 import java.util.ResourceBundle;
 import java.util.Locale;
 
@@ -20,6 +18,8 @@ public class MainApplicationFrame extends JFrame
     private ResourceBundle bundle;
     private ClosingHandler closingHandler = new ClosingHandler();
     private LoadingHandler loadingHandler = new LoadingHandler();
+    public GameWindow gameWindow;
+    public  LogWindow logWindow;
 
 
     public MainApplicationFrame(ResourceBundle bundle) {
@@ -34,7 +34,6 @@ public class MainApplicationFrame extends JFrame
         setContentPane(desktopPane);
 
         var frames = openSavedWindows();
-
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -44,21 +43,44 @@ public class MainApplicationFrame extends JFrame
                 closingHandler.handleClosing(bundle);
             }
             public void windowOpened(WindowEvent e) {
-                loadingHandler.handleLoading(MainApplicationFrame.this, frames, bundle);
+                File file = new File("window.dat");
+                if (file.exists()){
+                    loadingHandler.handleLoading(MainApplicationFrame.this, frames, bundle);
+                }
+                else{
+                    loadingHandler.makeNewWindows(MainApplicationFrame.this, bundle);
+                }
+
             }
         });
     }
 
-    private void setRussian(){
-        ResourceBundle bundle = ResourceBundle.getBundle("gui.Bundles.Bundle", new Locale("ru", "RU"));
-        saveWindowStates();
-        RobotsProgram.restart(bundle, this);
+    private enum Language{
+        RUS, ENG
     }
 
-    private void setEnglish(){
-        ResourceBundle bundle = ResourceBundle.getBundle("gui.Bundles.Bundle", new Locale("en", "EN"));
-        saveWindowStates();
-        RobotsProgram.restart(bundle, this);
+    private void changeLanguage(Language language){
+        Locale ru = new Locale("ru", "RU");
+        Locale en = new Locale("en", "EN");
+        Locale nextLocale = null;
+        switch (language){
+            case RUS:
+                nextLocale = ru;
+                break;
+            case ENG:
+                nextLocale = en;
+                break;
+        }
+        if (nextLocale != null){
+            ResourceBundle prevBundle = this.bundle;
+            ResourceBundle nextBundle = ResourceBundle.getBundle("gui.Bundles.Bundle", nextLocale);
+            if (!prevBundle.equals(nextBundle)){
+                logWindow.changeLanguage(nextBundle);
+                gameWindow.changeLanguage(nextBundle);
+                saveWindowStates();
+                RobotsProgram.restart(nextBundle, this);
+            }
+        }
     }
 
     private JInternalFrame[] openSavedWindows() {
@@ -87,7 +109,7 @@ public class MainApplicationFrame extends JFrame
         logWindow.setSize(300, 800);
         setMinimumSize(logWindow.getSize());
         logWindow.pack();
-        Logger.debug(bundle.getString("protocolKey"));
+        Logger.debug("protocolKey");
         return logWindow;
     }
     
@@ -104,7 +126,7 @@ public class MainApplicationFrame extends JFrame
         {
             mainMenu.add(createMenuItem(bundle.getString("getExit"),
                     (event) -> {
-                        Logger.info(bundle.getString("exit"));
+                        Logger.info("exit");
                         closingHandler.handleClosing(bundle);
                     }
             ));
@@ -112,13 +134,13 @@ public class MainApplicationFrame extends JFrame
             {
                 languageMenu.add(createMenuItem(bundle.getString("getRussian"),
                         (event) -> {
-                            setRussian();
+                            changeLanguage(Language.RUS);
                         }
                         ));
 
                 languageMenu.add(createMenuItem(bundle.getString("getEnglish"),
                         (event) -> {
-                            setEnglish();
+                            changeLanguage(Language.ENG);
                         }
                 ));
             }
@@ -150,7 +172,7 @@ public class MainApplicationFrame extends JFrame
         {
             testMenu.add(createMenuItem(bundle.getString("getMessageKey"),
                     (event) -> {
-                    Logger.debug(bundle.getString("messageKey"));
+                    Logger.debug("messageKey");
                     }
             ));
         }

@@ -1,8 +1,9 @@
 package gui.Bundles;
 
+import java.io.Serializable;
 import java.util.ListResourceBundle;
 
-public class Bundle_ru extends ListResourceBundle {
+public class Bundle_ru extends ListResourceBundle implements Serializable{
     private Object[][] contents = {
             {"modeKey", "Режим отображения"},
             {"systemModeKey", "Системная схема"},
