@@ -11,9 +11,6 @@ public class LoadingHandler {
         if (answer == JOptionPane.YES_OPTION) {
             for (var frame: frames) {
                 ((Reopenable)frame).setMetadata(bundle);
-                if (frame.getClass().getSimpleName().equals("LogWindow")) {
-                    ((LogWindow)frame).createNewLogSourceWithOldMessages(Logger.getDefaultLogSource());
-                }
                 mainFrame.addWindow(frame);
             }
             Logger.info("loadMessage");

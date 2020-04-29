@@ -3,6 +3,7 @@ package gui;
 import log.LogChangeListener;
 import log.LogEntry;
 import log.LogWindowSource;
+import log.Logger;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
@@ -42,6 +43,8 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Seri
     }
 
     public void setMetadata(ResourceBundle bundle) {
+        m_logSource = Logger.getDefaultLogSource();
+        m_logSource.registerListener(this);
         createNewClosingHandler(bundle);
     }
 
@@ -49,15 +52,6 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Seri
         m_bundle = nextBundle;
         this.setTitle(nextBundle.getString("logTitleKey"));
         updateLogContent();
-    }
-
-    public void createNewLogSourceWithOldMessages(LogWindowSource logSource) {
-        var entries = m_logSource.all();
-        m_logSource = logSource;
-        m_logSource.registerListener(this);
-        for (var entry: entries) {
-            m_logSource.append(entry.getLevel(), entry.getMessage());
-        }
     }
 
     private void createNewClosingHandler(ResourceBundle bundle) {
