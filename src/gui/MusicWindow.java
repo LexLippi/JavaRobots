@@ -8,13 +8,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.Serializable;
-import java.nio.file.Files;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 import javax.swing.*;
-import org.jdesktop.beansbinding.*;
-import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
+
 import sound.MusicPlayer;
 
 
@@ -55,7 +53,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
     }
 
     private void pauseBttnClicked(MouseEvent e) {
-        musicPlayer.stop();
+        musicPlayer.pause();
      }
 
     private void stopBttnClicked(MouseEvent e) {
@@ -70,7 +68,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
     public void changeLanguage(ResourceBundle nextBundle){
         m_bundle = nextBundle;
         this.setTitle(nextBundle.getString("musicPlayerTitleKey"));
-        nowPlaying.setText(m_bundle.getString("getCurrentSong") + " " + currentSong);
+        nowPlaying.setText(m_bundle.getString("getCurrentSong") + " " + musicPlayer.getCurrentSongName());
     }
 
     private void loopBttnMouseClicked(MouseEvent e) {

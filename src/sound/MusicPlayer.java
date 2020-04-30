@@ -3,7 +3,6 @@ package sound;
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Observable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -49,6 +48,12 @@ public class MusicPlayer extends Observable {
     }
 
     public void stop() {
+        isPaused = true;
+        clip.setFramePosition(0);
+        clip.stop();
+    }
+
+    public void pause() {
         isPaused = true;
         clipTimePosition = clip.getMicrosecondPosition();
         clip.stop();
