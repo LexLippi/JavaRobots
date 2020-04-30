@@ -26,5 +26,6 @@
     <orderEntry type="library" exported="" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.junit.platform:junit-platform-commons:1.6.0" level="project" />
+    <orderEntry type="library" name="Beans Binding" level="project" />
   </component>
 </module>

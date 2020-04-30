@@ -19,7 +19,8 @@ public class MainApplicationFrame extends JFrame
     private ClosingHandler closingHandler = new ClosingHandler();
     private LoadingHandler loadingHandler = new LoadingHandler();
     public GameWindow gameWindow;
-    public  LogWindow logWindow;
+    public LogWindow logWindow;
+    public MusicWindow musicWindow;
 
 
     public MainApplicationFrame(ResourceBundle bundle) {
@@ -77,6 +78,7 @@ public class MainApplicationFrame extends JFrame
             if (!prevBundle.equals(nextBundle)){
                 logWindow.changeLanguage(nextBundle);
                 gameWindow.changeLanguage(nextBundle);
+                musicWindow.changeLanguage(nextBundle);
                 saveWindowStates();
                 RobotsProgram.restart(nextBundle, this);
             }

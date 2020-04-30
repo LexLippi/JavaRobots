@@ -41,6 +41,8 @@ public class Bundle_en extends ListResourceBundle implements Serializable{
             {"closeLogWindow", "Close log window"},
             {"notCloseGameWindow", "Don't close game window"},
             {"notCloseLogWindow", "Don't close log window"},
+            {"getCurrentSong", "Now playing"},
+            {"musicPlayerTitleKey", "Music player"}
     };
 
     @Override

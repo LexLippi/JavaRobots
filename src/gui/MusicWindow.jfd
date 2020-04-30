@@ -1,0 +1,112 @@
+JFDML JFormDesigner: "7.0.1.0.272" Java: "11.0.3" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JInternalFrame", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) {
+			"autoSize": false
+		} ) {
+			name: "this"
+			"visible": true
+			"iconifiable": true
+			"maximizable": true
+			"resizable": true
+			"title": "Music Player"
+			"closable": true
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+				name: "currentSong"
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "nowPlaying"
+					"text": "PLAYING"
+					"horizontalAlignment": 0
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 5
+					"y": 0
+					"width": 385
+					"height": 50
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": -5
+				"y": 0
+				"height": 50
+				"width": 395
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) {
+				"autoSize": false
+			} ) {
+				name: "panel1"
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "stopBttn"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/stop32.png" )
+					"horizontalAlignment": 0
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "stopBttnClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 242
+					"y": 15
+					"width": 32
+					"height": 32
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "playBttn"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/play.png" )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "playButtonClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 165
+					"y": 0
+					"width": 64
+					"height": 64
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "pauseBttn"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/pause.png" )
+					"horizontalAlignment": 0
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "pauseBttnClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 120
+					"y": 15
+					"width": 32
+					"height": 32
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "skipBttn"
+					"horizontalAlignment": 0
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/skip.png" )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "skipBttnClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 287
+					"y": 15
+					"width": 32
+					"height": 32
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "rewindBttn"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/rewind.png" )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 75
+					"y": 15
+					"width": 32
+					"height": 32
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "loopBttn"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/replay.png" )
+					"horizontalAlignment": 0
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "loopBttnMouseClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 5
+					"y": 0
+					"width": 64
+					"height": 64
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 0
+				"y": 50
+				"height": 65
+				"width": 390
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 405, 150 )
+		} )
+	}
+}

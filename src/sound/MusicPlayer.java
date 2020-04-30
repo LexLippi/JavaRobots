@@ -1,6 +1,7 @@
 package sound;
 
 import javax.sound.sampled.*;
+import java.awt.event.TextEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -10,11 +11,14 @@ public class MusicPlayer {
     private FloatControl volumeLevel;
     private Clip clip;
     private final Listener lineListener = new Listener();
+    private long clipTimePosition = 0;
+    private String currentSongName;
 
     public MusicPlayer(File[] files){
         for (var file: files) {
             songs.add(new Song(file));
         }
+        currentSongName = songs.peek().getSongName();
         createNewClip();
     }
 
@@ -30,6 +34,7 @@ public class MusicPlayer {
         volumeLevel.setValue((max-min)*volume+min);
     }
 
+
     public float getVolumeLevel() {
         float volume = volumeLevel.getValue();
         float min = volumeLevel.getMinimum();
@@ -41,12 +46,22 @@ public class MusicPlayer {
         return songs.peek().getSongLengthInSeconds();
     }
 
-    public void pause() {
+    public void stop() {
+        clipTimePosition = clip.getMicrosecondPosition();
         clip.stop();
     }
 
     public void play() {
+        currentSongName = songs.peek().getSongName();
+        clip.setMicrosecondPosition(clipTimePosition);
         clip.start();
+    }
+
+    public void loop(boolean status){
+        if(status)
+            clip.loop(clip.LOOP_CONTINUOUSLY);
+        else
+            clip.loop(0);
     }
 
     public void skip() {
@@ -58,11 +73,19 @@ public class MusicPlayer {
     public void updateCurrentSong() {
         clip.close();
         var song = songs.remove();
-        var volume = getVolumeLevel();
         song.rewind();
+        songs.add(song);
+        var volume = getVolumeLevel();
         createNewClip();
         setVolumeLevel(volume);
-        songs.add(song);
+    }
+
+    public void setCurrentSong(String songName){
+        currentSongName = songName;
+    }
+
+    public String getCurrentSongName(){
+        return currentSongName;
     }
 
     private void createNewClip() {

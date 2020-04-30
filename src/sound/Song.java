@@ -19,6 +19,10 @@ public class Song{
         return stream;
     }
 
+    public String getSongName(){
+        return file.getName();
+    }
+
     public void rewind() {
         try {
             stream = AudioSystem.getAudioInputStream(file);
