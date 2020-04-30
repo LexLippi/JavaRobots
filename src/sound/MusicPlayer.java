@@ -1,18 +1,20 @@
 package sound;
 
 import javax.sound.sampled.*;
-import java.awt.event.TextEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.Observable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class MusicPlayer {
+public class MusicPlayer extends Observable {
     private ConcurrentLinkedQueue<Song> songs = new ConcurrentLinkedQueue<>();
     private FloatControl volumeLevel;
     private Clip clip;
     private final Listener lineListener = new Listener();
     private long clipTimePosition = 0;
     private String currentSongName;
+    private Boolean isPaused = false;
 
     public MusicPlayer(File[] files){
         for (var file: files) {
@@ -47,11 +49,13 @@ public class MusicPlayer {
     }
 
     public void stop() {
+        isPaused = true;
         clipTimePosition = clip.getMicrosecondPosition();
         clip.stop();
     }
 
     public void play() {
+        isPaused = false;
         currentSongName = songs.peek().getSongName();
         clip.setMicrosecondPosition(clipTimePosition);
         clip.start();
@@ -65,9 +69,8 @@ public class MusicPlayer {
     }
 
     public void skip() {
+        isPaused = false;
         clip.stop();
-        updateCurrentSong();
-        play();
     }
 
     public void updateCurrentSong() {
@@ -82,6 +85,8 @@ public class MusicPlayer {
 
     public void setCurrentSong(String songName){
         currentSongName = songName;
+        notifyObservers();
+        setChanged();
     }
 
     public String getCurrentSongName(){
@@ -101,8 +106,9 @@ public class MusicPlayer {
 
     private class Listener implements LineListener {
         public void update(LineEvent ev) {
-            if (ev.getType() == LineEvent.Type.STOP) {
+            if (ev.getType() == LineEvent.Type.STOP && !isPaused) {
                 updateCurrentSong();
+                setCurrentSong(songs.peek().getSongName());
                 play();
             }
         }

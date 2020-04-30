@@ -9,6 +9,8 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.Serializable;
 import java.nio.file.Files;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 import javax.swing.*;
 import org.jdesktop.beansbinding.*;
@@ -16,16 +18,32 @@ import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import sound.MusicPlayer;
 
 
-public class MusicWindow extends JInternalFrame implements Serializable
+public class MusicWindow extends JInternalFrame implements Serializable, Reopenable, Observer
 {
     private ResourceBundle m_bundle;
-    private MusicPlayer musicPlayer;
+    private transient MusicPlayer musicPlayer;
+    private File songFolder;
     private boolean loopStatus;
     public MusicWindow(File songFolder, ResourceBundle bundle) {
         m_bundle = bundle;
         if (songFolder.exists()){
+            this.songFolder = songFolder;
             musicPlayer = new MusicPlayer(songFolder.listFiles());
         }
+        musicPlayer.addObserver(this);
+        String currentSong = musicPlayer.getCurrentSongName();
+        initComponents();
+        nowPlaying.setText(m_bundle.getString("getCurrentSong") + " " + currentSong);
+        this.setTitle(m_bundle.getString("musicPlayerTitleKey"));
+    }
+
+    @Override
+    public void setMetadata(ResourceBundle bundle) {
+        m_bundle = bundle;
+        if (songFolder != null) {
+            musicPlayer = new MusicPlayer(songFolder.listFiles());
+        }
+        musicPlayer.addObserver(this);
         String currentSong = musicPlayer.getCurrentSongName();
         initComponents();
         nowPlaying.setText(m_bundle.getString("getCurrentSong") + " " + currentSong);
@@ -208,5 +226,11 @@ public class MusicWindow extends JInternalFrame implements Serializable
     private JLabel skipBttn;
     private JLabel rewindBttn;
     private JLabel loopBttn;
+
+    @Override
+    public void update(Observable observable, Object o) {
+        nowPlaying.setText(m_bundle.getString("getCurrentSong") + " " + musicPlayer.getCurrentSongName());
+    }
+
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
