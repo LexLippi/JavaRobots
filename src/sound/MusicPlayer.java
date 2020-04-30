@@ -61,9 +61,11 @@ public class MusicPlayer extends Observable {
 
     public void play() {
         isPaused = false;
-        currentSongName = songs.peek().getSongName();
+        setCurrentSong(songs.peek().getSongName());
         clip.setMicrosecondPosition(clipTimePosition);
         clip.start();
+        notifyObservers();
+        setChanged();
     }
 
     public void loop(boolean status){
@@ -113,7 +115,6 @@ public class MusicPlayer extends Observable {
         public void update(LineEvent ev) {
             if (ev.getType() == LineEvent.Type.STOP && !isPaused) {
                 updateCurrentSong();
-                setCurrentSong(songs.peek().getSongName());
                 play();
             }
         }

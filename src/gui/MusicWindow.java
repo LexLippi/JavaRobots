@@ -29,9 +29,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
             musicPlayer = new MusicPlayer(songFolder.listFiles());
         }
         musicPlayer.addObserver(this);
-        String currentSong = musicPlayer.getCurrentSongName();
         initComponents();
-        nowPlaying.setText(m_bundle.getString("getCurrentSong") + " " + currentSong);
         this.setTitle(m_bundle.getString("musicPlayerTitleKey"));
     }
 
@@ -42,9 +40,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
             musicPlayer = new MusicPlayer(songFolder.listFiles());
         }
         musicPlayer.addObserver(this);
-        String currentSong = musicPlayer.getCurrentSongName();
         initComponents();
-        nowPlaying.setText(m_bundle.getString("getCurrentSong") + " " + currentSong);
         this.setTitle(m_bundle.getString("musicPlayerTitleKey"));
     }
 
