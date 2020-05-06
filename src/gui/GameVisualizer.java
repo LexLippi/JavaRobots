@@ -1,7 +1,9 @@
 package gui;
 
 import game.RobotModel;
+import game.RobotState;
 import game.TargetModel;
+import sound.MusicPlayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +12,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.io.File;
 import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
@@ -20,11 +23,13 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
 {
     private TargetModel targetModel;
     private RobotModel robotModel;
+    private transient MusicPlayer musicPlayer;
 
     public GameVisualizer() 
     {
         targetModel = new TargetModel();
         robotModel = new RobotModel(getWidth(), getHeight(), targetModel);
+        musicPlayer = new MusicPlayer((new File[] {new File("src/robotSounds/RobotMoving.wav")}));
         targetModel.addObserver(this);
         robotModel.addObserver(this);
         addMouseListener(new MouseAdapter()
@@ -33,10 +38,15 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
             public void mouseClicked(MouseEvent e)
             {
                 targetModel.setTargetPosition(e.getPoint());
+                musicPlayer.deleteAllSongs();
+                musicPlayer.addNewSongs((new File[] {new File("src/robotSounds/RobotMoving.wav")}));
+                musicPlayer.play();
             }
         });
         addComponentListener(new ResizeListener());
         setDoubleBuffered(true);
+        musicPlayer.play();
+        musicPlayer.setVolumeLevel(0.9f);
     }
 
     class ResizeListener extends ComponentAdapter {
@@ -49,12 +59,18 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
         robotModel.setMetadata();
         targetModel.addObserver(this);
         robotModel.addObserver(this);
+        musicPlayer = new MusicPlayer((new File[] {new File("src/robotSounds/RobotMoving.wav")}));
+        musicPlayer.play();
+        musicPlayer.setVolumeLevel(0.9f);
         addMouseListener(new MouseAdapter()
         {
             @Override
             public void mouseClicked(MouseEvent e)
             {
                 targetModel.setTargetPosition(e.getPoint());
+                musicPlayer.deleteAllSongs();
+                musicPlayer.addNewSongs((new File[] {new File("src/robotSounds/RobotMoving.wav")}));
+                musicPlayer.play();
             }
         });
         addComponentListener(new ResizeListener());
@@ -111,7 +127,23 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
     }
 
     @Override
-    public void update(Observable observable, Object o) {
-        onRedrawEvent();
+    public void update(Observable observable, Object state) {
+        try {
+            var robotState = (RobotState)state;
+            switch (robotState) {
+                case MOVE:
+                    onRedrawEvent();
+                    break;
+                case STAND:
+                    musicPlayer.deleteAllSongs();
+                    musicPlayer.addNewSongs((new File[] {new File("src/robotSounds/RobotStanding.wav")}));
+                    musicPlayer.play();
+                    break;
+                default:
+                    throw new IllegalStateException("Update GameVisualizer received illegal robot state");
+            }
+        } catch (ClassCastException|NullPointerException e) {
+            onRedrawEvent();
+        }
     }
 }

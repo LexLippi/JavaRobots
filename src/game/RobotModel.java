@@ -15,6 +15,7 @@ public class RobotModel extends Observable implements Serializable {
     private volatile double m_robotDirection = 0;
     private static final double maxVelocity = 0.1;
     private static final double maxAngularVelocity = 0.001;
+    private volatile RobotState robotState;
 
     private static Timer createTimer()
     {
@@ -25,14 +26,7 @@ public class RobotModel extends Observable implements Serializable {
         m_fieldWidth = fieldWidth;
         m_fieldHeight = fieldHeight;
         this.targetModel = targetModel;
-        m_timer.schedule(new TimerTask()
-        {
-            @Override
-            public void run() {
-                notifyObservers();
-                setChanged();
-            }
-        }, 0, 50);
+        robotState = RobotState.MOVE;
         m_timer.schedule(new TimerTask()
         {
             @Override
@@ -41,18 +35,11 @@ public class RobotModel extends Observable implements Serializable {
                 onModelUpdateEvent();
             }
         }, 0, 10);
+
     }
 
     public void setMetadata() {
         m_timer = createTimer();
-        m_timer.schedule(new TimerTask()
-        {
-            @Override
-            public void run() {
-                notifyObservers();
-                setChanged();
-            }
-        }, 0, 50);
         m_timer.schedule(new TimerTask()
         {
             @Override
@@ -84,8 +71,12 @@ public class RobotModel extends Observable implements Serializable {
     {
         double distance = distance(targetModel.getTargetPositionX(), targetModel.getTargetPositionY(),
                 m_robotPositionX, m_robotPositionY);
-        if (distance < 0.5)
-        {
+        if (distance < 0.5) {
+            if (robotState == RobotState.MOVE) {
+                robotState = RobotState.STAND;
+                notifyObservers(robotState);
+                setChanged();
+            }
             return;
         }
         double angleToTarget = angleTo(m_robotPositionX, m_robotPositionY,
@@ -100,6 +91,9 @@ public class RobotModel extends Observable implements Serializable {
             angularVelocity = -maxAngularVelocity;
         }
         moveRobot(maxVelocity, angularVelocity, 10);
+        robotState = RobotState.MOVE;
+        notifyObservers(robotState);
+        setChanged();
     }
 
     private void moveRobot(double velocity, double angularVelocity, double duration)

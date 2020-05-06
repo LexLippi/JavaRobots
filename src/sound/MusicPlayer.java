@@ -23,6 +23,20 @@ public class MusicPlayer extends Observable {
         createNewClip();
     }
 
+    public void deleteAllSongs() {
+        stop();
+        songs.clear();
+        currentSongName = null;
+    }
+
+    public void addNewSongs(File[] files) {
+        for (var file : files) {
+            songs.add(new Song(file));
+        }
+        currentSongName = songs.peek().getSongName();
+        createNewClip();
+    }
+
     public void setVolumeLevel(float volume) {
         if (volume < 0) {
             volume = 0;
