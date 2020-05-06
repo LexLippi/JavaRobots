@@ -14,10 +14,9 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class GameVisualizer extends JPanel implements Serializable, Observer
 {
@@ -38,9 +37,11 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
             public void mouseClicked(MouseEvent e)
             {
                 targetModel.setTargetPosition(e.getPoint());
-                musicPlayer.deleteAllSongs();
-                musicPlayer.addNewSongs((new File[] {new File("src/robotSounds/RobotMoving.wav")}));
-                musicPlayer.play();
+                if (!Objects.equals(musicPlayer.getCurrentSongName(), "RobotMoving.wav")) {
+                    musicPlayer.deleteAllSongs();
+                    musicPlayer.addNewSongs((new File[] {new File("src/robotSounds/RobotMoving.wav")}));
+                    musicPlayer.play();
+                }
             }
         });
         addComponentListener(new ResizeListener());
@@ -133,9 +134,10 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
             var robotState = (RobotState)state;
             switch (robotState) {
                 case MOVE:
+                case STAND:
                     onRedrawEvent();
                     break;
-                case STAND:
+                case SHUTDOWN:
                     musicPlayer.deleteAllSongs();
                     musicPlayer.addNewSongs((new File[] {new File("src/robotSounds/RobotStanding.wav")}));
                     musicPlayer.play();

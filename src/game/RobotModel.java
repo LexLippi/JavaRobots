@@ -26,7 +26,7 @@ public class RobotModel extends Observable implements Serializable {
         m_fieldWidth = fieldWidth;
         m_fieldHeight = fieldHeight;
         this.targetModel = targetModel;
-        robotState = RobotState.MOVE;
+        robotState = RobotState.SHUTDOWN;
         m_timer.schedule(new TimerTask()
         {
             @Override
@@ -67,16 +67,23 @@ public class RobotModel extends Observable implements Serializable {
         return m_robotDirection;
     }
 
+    private void notifyObserversWithState() {
+        notifyObservers(robotState);
+        setChanged();
+    }
+
     protected void onModelUpdateEvent()
     {
         double distance = distance(targetModel.getTargetPositionX(), targetModel.getTargetPositionY(),
                 m_robotPositionX, m_robotPositionY);
         if (distance < 0.5) {
             if (robotState == RobotState.MOVE) {
-                robotState = RobotState.STAND;
-                notifyObservers(robotState);
-                setChanged();
+                robotState = RobotState.SHUTDOWN;
             }
+            else if (robotState == RobotState.SHUTDOWN) {
+                robotState = RobotState.STAND;
+            }
+            notifyObserversWithState();
             return;
         }
         double angleToTarget = angleTo(m_robotPositionX, m_robotPositionY,

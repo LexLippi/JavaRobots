@@ -1,6 +1,7 @@
 package game;
 
 public enum RobotState {
+    MOVE,
     STAND,
-    MOVE
+    SHUTDOWN
 }
