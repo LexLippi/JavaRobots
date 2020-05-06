@@ -74,6 +74,7 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
             }
         });
         addComponentListener(new ResizeListener());
+        onRedrawEvent();
     }
     
     protected void onRedrawEvent()
