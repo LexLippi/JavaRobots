@@ -4,10 +4,10 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class MusicPlayer extends Observable {
-    private ConcurrentLinkedQueue<Song> songs = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedDeque<Song> songs = new ConcurrentLinkedDeque<>();
     private FloatControl volumeLevel;
     private Clip clip;
     private final Listener lineListener = new Listener();
@@ -61,6 +61,12 @@ public class MusicPlayer extends Observable {
         return songs.peek().getSongLengthInSeconds();
     }
 
+    public void getPreviousSong() {
+        isPaused = false;
+        setPreviousSongToPeek();
+        play();
+    }
+
     public void stop() {
         isPaused = true;
         clip.setFramePosition(0);
@@ -94,11 +100,21 @@ public class MusicPlayer extends Observable {
         clip.stop();
     }
 
-    public void updateCurrentSong() {
+    public void setPreviousSongToPeek() {
+        clip.close();
+        var prevSong = songs.pop();
+        prevSong.rewind();
+        songs.addFirst(prevSong);
+        var volume = getVolumeLevel();
+        createNewClip();
+        setVolumeLevel(volume);
+    }
+
+    public void setNextSongToPeek() {
         clip.close();
         var song = songs.remove();
         song.rewind();
-        songs.add(song);
+        songs.addLast(song);
         var volume = getVolumeLevel();
         createNewClip();
         setVolumeLevel(volume);
@@ -128,7 +144,7 @@ public class MusicPlayer extends Observable {
     private class Listener implements LineListener {
         public void update(LineEvent ev) {
             if (ev.getType() == LineEvent.Type.STOP && !isPaused) {
-                updateCurrentSong();
+                setNextSongToPeek();
                 play();
             }
         }

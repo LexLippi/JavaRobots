@@ -130,23 +130,23 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
 
     @Override
     public void update(Observable observable, Object state) {
-        try {
-            var robotState = (RobotState)state;
-            switch (robotState) {
-                case MOVE:
-                case STAND:
-                    onRedrawEvent();
-                    break;
-                case SHUTDOWN:
-                    musicPlayer.deleteAllSongs();
-                    musicPlayer.addNewSongs((new File[] {new File("src/robotSounds/RobotStanding.wav")}));
-                    musicPlayer.play();
-                    break;
-                default:
-                    throw new IllegalStateException("Update GameVisualizer received illegal robot state");
-            }
-        } catch (ClassCastException|NullPointerException e) {
+        if (state == null) {
             onRedrawEvent();
+            return;
+        }
+        var robotState = (RobotState)state;
+        switch (robotState) {
+            case MOVE:
+            case STAND:
+                onRedrawEvent();
+                break;
+            case SHUTDOWN:
+                musicPlayer.deleteAllSongs();
+                musicPlayer.addNewSongs((new File[] {new File("src/robotSounds/RobotStanding.wav")}));
+                musicPlayer.play();
+                break;
+            default:
+                throw new IllegalStateException("Update GameVisualizer received illegal robot state");
         }
     }
 }
