@@ -1,8 +1,9 @@
 package sound;
 
 import javax.sound.sampled.*;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Observable;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -15,9 +16,9 @@ public class MusicPlayer extends Observable {
     private String currentSongName;
     private Boolean isPaused = false;
 
-    public MusicPlayer(File[] files){
-        for (var file: files) {
-            songs.add(new Song(file));
+    public MusicPlayer(URL[] urls) {
+        for (var url: urls) {
+            songs.add(new Song(url));
         }
         currentSongName = songs.peek().getSongName();
         createNewClip();
@@ -29,9 +30,9 @@ public class MusicPlayer extends Observable {
         currentSongName = null;
     }
 
-    public void addNewSongs(File[] files) {
-        for (var file : files) {
-            songs.add(new Song(file));
+    public void addNewSongs(URL[] urls) {
+        for (var url: urls) {
+            songs.add(new Song(url));
         }
         currentSongName = songs.peek().getSongName();
         createNewClip();

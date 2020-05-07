@@ -5,6 +5,7 @@ import game.RobotState;
 import game.TargetModel;
 import sound.MusicPlayer;
 
+import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -13,7 +14,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
@@ -28,7 +34,8 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
     {
         targetModel = new TargetModel();
         robotModel = new RobotModel(getWidth(), getHeight(), targetModel);
-        musicPlayer = new MusicPlayer((new File[] {new File("src/robotSounds/RobotMoving.wav")}));
+        var url = getClass().getResource("/robotSounds/RobotMoving.wav");
+        musicPlayer = new MusicPlayer((new URL[] {url}));
         targetModel.addObserver(this);
         robotModel.addObserver(this);
         addMouseListener(new MouseAdapter()
@@ -39,7 +46,8 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
                 targetModel.setTargetPosition(e.getPoint());
                 if (!Objects.equals(musicPlayer.getCurrentSongName(), "RobotMoving.wav")) {
                     musicPlayer.deleteAllSongs();
-                    musicPlayer.addNewSongs((new File[] {new File("src/robotSounds/RobotMoving.wav")}));
+                    var url = getClass().getResource("/robotSounds/RobotMoving.wav");
+                    musicPlayer.addNewSongs((new URL[] {url}));
                     musicPlayer.play();
                 }
             }
@@ -60,7 +68,8 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
         robotModel.setMetadata();
         targetModel.addObserver(this);
         robotModel.addObserver(this);
-        musicPlayer = new MusicPlayer((new File[] {new File("src/robotSounds/RobotMoving.wav")}));
+        var url = getClass().getResource("/robotSounds/RobotMoving.wav");
+        musicPlayer = new MusicPlayer((new URL[] {url}));
         musicPlayer.play();
         musicPlayer.setVolumeLevel(0.9f);
         addMouseListener(new MouseAdapter()
@@ -70,7 +79,8 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
             {
                 targetModel.setTargetPosition(e.getPoint());
                 musicPlayer.deleteAllSongs();
-                musicPlayer.addNewSongs((new File[] {new File("src/robotSounds/RobotMoving.wav")}));
+                var url = getClass().getResource("/robotSounds/RobotMoving.wav");
+                musicPlayer.addNewSongs((new URL[] {url}));
                 musicPlayer.play();
             }
         });
@@ -142,7 +152,8 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
                 break;
             case SHUTDOWN:
                 musicPlayer.deleteAllSongs();
-                musicPlayer.addNewSongs((new File[] {new File("src/robotSounds/RobotStanding.wav")}));
+                var url = getClass().getResource("/robotSounds/RobotStanding.wav");
+                musicPlayer.addNewSongs((new URL[] {url}));
                 musicPlayer.play();
                 break;
             default:

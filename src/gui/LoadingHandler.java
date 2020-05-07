@@ -4,6 +4,8 @@ import log.Logger;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoadingHandler {
@@ -27,7 +29,10 @@ public class LoadingHandler {
         mainFrame.gameWindow = new GameWindow(bundle);
         mainFrame.gameWindow.setSize(400,  400);
         mainFrame.addWindow(mainFrame.gameWindow);
-        mainFrame.musicWindow = new MusicWindow(new File("src/songs"), bundle);
+        mainFrame.musicWindow = new MusicWindow(new URL[] {
+                getClass().getResource("/songs/Frank Ocean - Chanel.wav"),
+                getClass().getResource("/songs/The Soul Machine - Twitchie Feet.wav"),
+        }, bundle);
         mainFrame.musicWindow.setSize(400,150);
         mainFrame.addWindow(mainFrame.musicWindow);
         Logger.info("notLoadMessage");
