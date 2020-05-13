@@ -1,10 +1,10 @@
 package gui;
 
+import game.RobotModel;
+import game.TargetModel;
 import log.Logger;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -24,11 +24,19 @@ public class LoadingHandler {
     }
 
     public void makeNewWindows(MainApplicationFrame mainFrame, ResourceBundle bundle){
+        var targetModel = new TargetModel();
+        var robotModel = new RobotModel(targetModel);
         mainFrame.logWindow = mainFrame.createLogWindow();
         mainFrame.addWindow(mainFrame.logWindow);
-        mainFrame.gameWindow = new GameWindow(bundle);
+        mainFrame.gameWindow = new GameWindow(bundle, robotModel, targetModel);
         mainFrame.gameWindow.setSize(400,  400);
         mainFrame.addWindow(mainFrame.gameWindow);
+        mainFrame.robotCoordinatesWindow = new RobotCoordinatesWindow(robotModel, bundle);
+        mainFrame.robotCoordinatesWindow.setSize(500, 100);
+        mainFrame.addWindow(mainFrame.robotCoordinatesWindow);
+        mainFrame.distanceWindow = new DistanceWindow(robotModel, bundle);
+        mainFrame.distanceWindow.setSize(500, 100);
+        mainFrame.addWindow(mainFrame.distanceWindow);
         mainFrame.musicWindow = new MusicWindow(new URL[] {
                 getClass().getResource("/songs/Frank Ocean - Chanel.wav"),
                 getClass().getResource("/songs/The Soul Machine - Twitchie Feet.wav"),

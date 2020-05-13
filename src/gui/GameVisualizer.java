@@ -31,10 +31,11 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
     private transient MusicPlayer musicPlayer;
     protected ClosingHandler closingHandler;
 
-    public GameVisualizer() 
+    public GameVisualizer(RobotModel robotModel, TargetModel targetModel)
     {
-        targetModel = new TargetModel();
-        robotModel = new RobotModel(getWidth(), getHeight(), targetModel);
+        this.targetModel = targetModel;
+        this.robotModel = robotModel;
+        this.robotModel.setFieldSize(getWidth(), getHeight());
         var url = getClass().getResource("/robotSounds/RobotMoving.wav");
         musicPlayer = new MusicPlayer((new URL[] {url}));
         targetModel.addObserver(this);

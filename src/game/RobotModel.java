@@ -2,13 +2,14 @@ package game;
 
 import java.io.Serializable;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class RobotModel extends Observable implements Serializable {
+public class RobotModel extends Observable implements Serializable, Observer {
     private transient Timer m_timer = createTimer();
-    private volatile double m_fieldWidth;
-    private volatile double m_fieldHeight;
+    private volatile double m_fieldWidth = 100f;
+    private volatile double m_fieldHeight = 100f;
     private volatile TargetModel targetModel;
     private volatile double m_robotPositionX = 100;
     private volatile double m_robotPositionY = 100;
@@ -22,11 +23,10 @@ public class RobotModel extends Observable implements Serializable {
         return new Timer("events generator", true);
     }
 
-    public RobotModel(float fieldWidth, float fieldHeight, TargetModel targetModel) {
-        m_fieldWidth = fieldWidth;
-        m_fieldHeight = fieldHeight;
+    public RobotModel(TargetModel targetModel) {
         this.targetModel = targetModel;
-        robotState = RobotState.SHUTDOWN;
+        this.targetModel.addObserver(this);
+        robotState = RobotState.MOVE;
         m_timer.schedule(new TimerTask()
         {
             @Override
@@ -35,7 +35,6 @@ public class RobotModel extends Observable implements Serializable {
                 onModelUpdateEvent();
             }
         }, 0, 10);
-
     }
 
     public void setMetadata() {
@@ -72,10 +71,14 @@ public class RobotModel extends Observable implements Serializable {
         setChanged();
     }
 
+    public double getDistanceToTarget() {
+        return distance(targetModel.getTargetPositionX(), targetModel.getTargetPositionY(),
+                m_robotPositionX, m_robotPositionY);
+    }
+
     protected void onModelUpdateEvent()
     {
-        double distance = distance(targetModel.getTargetPositionX(), targetModel.getTargetPositionY(),
-                m_robotPositionX, m_robotPositionY);
+        double distance = getDistanceToTarget();
         if (distance < 0.5) {
             if (robotState == RobotState.MOVE) {
                 robotState = RobotState.SHUTDOWN;
@@ -175,5 +178,10 @@ public class RobotModel extends Observable implements Serializable {
         double diffY = toY - fromY;
 
         return asNormalizedRadians(Math.atan2(diffY, diffX));
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        onModelUpdateEvent();
     }
 }

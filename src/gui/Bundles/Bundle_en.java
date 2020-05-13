@@ -44,7 +44,12 @@ public class Bundle_en extends ListResourceBundle implements Serializable{
             {"getCurrentSong", "Now playing"},
             {"musicPlayerTitleKey", "Music player"},
             {"closeMusicWindow", "Close music window"},
-            {"notCloseMusicWindow", "Don't close music window"}
+            {"notCloseMusicWindow", "Don't close music window"},
+            {"getTitleRobotName", "Robot name"},
+            {"getTitleRobotHorizontalCoordinate", "Horizontal coordinate"},
+            {"getTitleRobotVerticalCoordinate", "Vertical coordinate"},
+            {"getRobotName", "Pig Peter"},
+            {"getTitleRobotDistance", "Distance to target"}
     };
 
     @Override
