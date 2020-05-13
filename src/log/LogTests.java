@@ -14,7 +14,6 @@ class LoggerTest {
     @Test
     void TestLogEntry() {
        LogEntry entry = new LogEntry(LogLevel.Trace, "Trace message");
-
        Assertions.assertEquals("Trace message", entry.getMessage());
        Assertions.assertEquals(LogLevel.Trace, entry.getLevel());
     }
@@ -22,7 +21,6 @@ class LoggerTest {
     @Test
     void TestLoggerDebug() {
         Logger.getDefaultLogSource().all().iterator().remove();
-        //Logger.getDefaultLogSource().all().iterator().remove();
         Logger.debug("logger debug works");
         System.out.println(Logger.getDefaultLogSource().all());
         Assertions.assertEquals("logger debug works", Logger.getDefaultLogSource().all().iterator().next().getMessage());
@@ -36,7 +34,5 @@ class LoggerTest {
         source.append(LogLevel.Trace, "trace message");
         Assertions.assertEquals(LogLevel.Trace, source.all().iterator().next().getLevel());
         Assertions.assertEquals("trace message", source.all().iterator().next().getMessage());
-        //source.all().iterator().next();
-        //source.all().iterator().remove();
     }
 }

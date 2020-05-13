@@ -6,8 +6,9 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
@@ -23,19 +24,16 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
     private MusicWindow musicWindow = this;
     private ResourceBundle m_bundle;
     private transient MusicPlayer musicPlayer;
-    private File songFolder;
+    private URL[] songs;
     private boolean loopStatus;
     private boolean muteStatus = false;
     private float unmutedVolume;
     private ClosingHandler closingHandler;
 
-    public MusicWindow(File songFolder, ResourceBundle bundle) {
+    public MusicWindow(URL[] songsUrls, ResourceBundle bundle) {
         m_bundle = bundle;
-        if (songFolder.exists()){
-            this.songFolder = songFolder;
-            musicPlayer = new MusicPlayer(songFolder.listFiles());
-            closingHandler = new ClosingHandler(musicPlayer);
-        }
+        this.songs = songsUrls;
+        musicPlayer = new MusicPlayer(songs);
         musicPlayer.addObserver(this);
         initComponents();
         this.setTitle(m_bundle.getString("musicPlayerTitleKey"));
@@ -49,9 +47,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
     @Override
     public void setMetadata(ResourceBundle bundle) {
         m_bundle = bundle;
-        if (songFolder != null) {
-            musicPlayer = new MusicPlayer(songFolder.listFiles());
-        }
+        musicPlayer = new MusicPlayer(songs);
         musicPlayer.addObserver(this);
         initComponents();
         this.setTitle(m_bundle.getString("musicPlayerTitleKey"));

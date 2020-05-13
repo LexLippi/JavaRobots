@@ -38,7 +38,7 @@ new FormModel {
 				name: "panel1"
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "stopBttn"
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/stop32.png" )
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/resources.playerIcons/stop32.png" )
 					"horizontalAlignment": 0
 					"cursor": &Cursor0 new java.awt.Cursor( 12 )
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "stopBttnClicked", true ) )
@@ -61,7 +61,7 @@ new FormModel {
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "pauseBttn"
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/pause.png" )
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/resources.playerIcons/pause.png" )
 					"horizontalAlignment": 0
 					"cursor": #Cursor0
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "pauseBttnClicked", true ) )
@@ -95,7 +95,7 @@ new FormModel {
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "loopBttn"
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/replay.png" )
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/resources.playerIcons/replay.png" )
 					"horizontalAlignment": 0
 					"cursor": #Cursor0
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "loopBttnMouseClicked", true ) )
