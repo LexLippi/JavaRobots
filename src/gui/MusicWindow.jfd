@@ -13,6 +13,7 @@ new FormModel {
 			"resizable": true
 			"title": "Music Player"
 			"closable": true
+			"defaultCloseOperation": 0
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
 				name: "currentSong"
 				add( new FormComponent( "javax.swing.JLabel" ) {
@@ -20,16 +21,16 @@ new FormModel {
 					"text": "PLAYING"
 					"horizontalAlignment": 0
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 5
+					"x": 0
 					"y": 0
-					"width": 385
-					"height": 50
+					"width": 455
+					"height": 45
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"x": -5
+				"x": 0
 				"y": 0
-				"height": 50
-				"width": 395
+				"height": 85
+				"width": 455
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) {
 				"autoSize": false
@@ -39,6 +40,7 @@ new FormModel {
 					name: "stopBttn"
 					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/stop32.png" )
 					"horizontalAlignment": 0
+					"cursor": &Cursor0 new java.awt.Cursor( 12 )
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "stopBttnClicked", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 242
@@ -49,6 +51,7 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "playBttn"
 					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/play.png" )
+					"cursor": #Cursor0
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "playButtonClicked", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 165
@@ -60,6 +63,7 @@ new FormModel {
 					name: "pauseBttn"
 					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/pause.png" )
 					"horizontalAlignment": 0
+					"cursor": #Cursor0
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "pauseBttnClicked", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 120
@@ -71,6 +75,7 @@ new FormModel {
 					name: "skipBttn"
 					"horizontalAlignment": 0
 					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/skip.png" )
+					"cursor": #Cursor0
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "skipBttnClicked", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 287
@@ -81,6 +86,7 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "rewindBttn"
 					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/rewind.png" )
+					"cursor": #Cursor0
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 75
 					"y": 15
@@ -91,6 +97,7 @@ new FormModel {
 					name: "loopBttn"
 					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/replay.png" )
 					"horizontalAlignment": 0
+					"cursor": #Cursor0
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "loopBttnMouseClicked", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 5
@@ -98,15 +105,42 @@ new FormModel {
 					"width": 64
 					"height": 64
 				} )
+				add( new FormComponent( "javax.swing.JSlider" ) {
+					name: "volumeSlider"
+					"font": new com.jformdesigner.model.SwingDerivedFont( null, 2, 0, false )
+					"foreground": new java.awt.Color( 255, 255, 255, 255 )
+					"minorTickSpacing": 5
+					"majorTickSpacing": 10
+					auxiliary() {
+						"JavaCodeGenerator.customCreateCode": "new JSlider((int) musicPlayer.volumeLevel.getMinimum()*50,(int) musicPlayer.volumeLevel.getMaximum()*100,(int) musicPlayer.volumeLevel.getValue()*100);"
+					}
+					addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "volumeChanged", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 370
+					"y": 15
+					"width": 80
+					"height": 32
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "volumeBttn"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/volume.png" )
+					"cursor": new java.awt.Cursor( 12 )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "volumeBttnClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 332
+					"y": 15
+					"width": 32
+					"height": 32
+				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 0
-				"y": 50
+				"y": 85
 				"height": 65
-				"width": 390
+				"width": 455
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 405, 150 )
+			"size": new java.awt.Dimension( 470, 185 )
 		} )
 	}
 }

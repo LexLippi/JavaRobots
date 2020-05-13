@@ -1,6 +1,7 @@
 package gui;
 
 import log.Logger;
+import sound.MusicPlayer;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameEvent;
@@ -8,8 +9,17 @@ import java.io.Serializable;
 import java.util.ResourceBundle;
 
 public class ClosingHandler implements Serializable {
+    MusicPlayer m_player;
+    public ClosingHandler(MusicPlayer player){
+        m_player = player;
+    }
+
+    public ClosingHandler(){
+
+    }
+
     public enum ClosingType{
-        GAME, LOG
+        GAME, LOG, MUSIC
     }
 
     private enum Context{
@@ -40,8 +50,13 @@ public class ClosingHandler implements Serializable {
                 yesMessage = "closeLogWindow";
                 noMessage = "notCloseLogWindow";
                 break;
+            case MUSIC:
+                yesMessage = "closeMusicWindow";
+                noMessage = "notCloseMusicWindow";
         }
         if (answer == JOptionPane.YES_OPTION) {
+            if(m_player != null)
+                m_player.pause();
             Logger.info(yesMessage);
             window.dispose();
         }

@@ -42,7 +42,9 @@ public class Bundle_ru extends ListResourceBundle implements Serializable{
             {"notCloseGameWindow", "Не закрыто окно игры"},
             {"notCloseLogWindow", "Не закрыто окно логов"},
             {"getCurrentSong", "Сейчас играет"},
-            {"musicPlayerTitleKey", "Музыкальный проигрыватель"}
+            {"musicPlayerTitleKey", "Музыкальный проигрыватель"},
+            {"closeMusicWindow", "Закрыт музыкальный проигрыватель"},
+            {"notCloseMusicWindow", "Не закрыт музыкальный проигрыватель"}
     };
 
     @Override

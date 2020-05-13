@@ -28,7 +28,7 @@ public class LoadingHandler {
         mainFrame.gameWindow.setSize(400,  400);
         mainFrame.addWindow(mainFrame.gameWindow);
         mainFrame.musicWindow = new MusicWindow(new File("src/songs"), bundle);
-        mainFrame.musicWindow.setSize(400,150);
+        mainFrame.musicWindow.setSize(460,190);
         mainFrame.addWindow(mainFrame.musicWindow);
         Logger.info("notLoadMessage");
     }

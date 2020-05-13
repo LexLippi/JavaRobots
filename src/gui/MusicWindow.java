@@ -12,25 +12,38 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.event.*;
 
 import sound.MusicPlayer;
 
 
 public class MusicWindow extends JInternalFrame implements Serializable, Reopenable, Observer
 {
+    private MusicWindow musicWindow = this;
     private ResourceBundle m_bundle;
     private transient MusicPlayer musicPlayer;
     private File songFolder;
     private boolean loopStatus;
+    private boolean muteStatus = false;
+    private float unmutedVolume;
+    private ClosingHandler closingHandler;
+
     public MusicWindow(File songFolder, ResourceBundle bundle) {
         m_bundle = bundle;
         if (songFolder.exists()){
             this.songFolder = songFolder;
             musicPlayer = new MusicPlayer(songFolder.listFiles());
+            closingHandler = new ClosingHandler(musicPlayer);
         }
         musicPlayer.addObserver(this);
         initComponents();
         this.setTitle(m_bundle.getString("musicPlayerTitleKey"));
+        addInternalFrameListener(new InternalFrameAdapter() {
+            public void internalFrameClosing(InternalFrameEvent e) {
+                closingHandler.handleClosing(musicWindow, e, bundle, ClosingHandler.ClosingType.MUSIC);
+            }
+        });
     }
 
     @Override
@@ -76,6 +89,29 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         loopStatus = !loopStatus;
     }
 
+    @Override
+    public void update(Observable observable, Object o) {
+        nowPlaying.setText(m_bundle.getString("getCurrentSong") + " " + musicPlayer.getCurrentSongName());
+    }
+
+    private void volumeChanged(ChangeEvent e) {
+        JSlider source = (JSlider) e.getSource();
+        musicPlayer.setMusicVolume(source.getValue()/100.0f);
+    }
+
+    private void volumeBttnClicked(MouseEvent e) {
+        if(muteStatus) {
+            musicPlayer.setMusicVolume(unmutedVolume);
+            volumeBttn.setIcon(new ImageIcon(getClass().getResource("/playerIcons/volume.png")));
+        }
+        else {
+            unmutedVolume = musicPlayer.getVolumeLevel();
+            volumeBttn.setIcon(new ImageIcon(getClass().getResource("/playerIcons/muted.png")));
+            musicPlayer.setVolumeLevel(0.0f);
+        }
+        muteStatus = !muteStatus;
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - unknown
@@ -88,6 +124,8 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         skipBttn = new JLabel();
         rewindBttn = new JLabel();
         loopBttn = new JLabel();
+        volumeSlider = new JSlider((int) musicPlayer.volumeLevel.getMinimum()*50,(int) musicPlayer.volumeLevel.getMaximum()*100,(int) musicPlayer.volumeLevel.getValue()*100);
+        volumeBttn = new JLabel();
 
         //======== this ========
         setVisible(true);
@@ -96,18 +134,20 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         setResizable(true);
         setTitle("Music Player");
         setClosable(true);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         var contentPane = getContentPane();
         contentPane.setLayout(null);
 
         //======== currentSong ========
         {
+
             currentSong.setLayout(null);
-            
+
             //---- nowPlaying ----
             nowPlaying.setText("PLAYING");
             nowPlaying.setHorizontalAlignment(SwingConstants.CENTER);
             currentSong.add(nowPlaying);
-            nowPlaying.setBounds(5, 0, 385, 50);
+            nowPlaying.setBounds(0, 0, 455, 45);
 
             {
                 // compute preferred size
@@ -125,7 +165,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
             }
         }
         contentPane.add(currentSong);
-        currentSong.setBounds(-5, 0, 395, 50);
+        currentSong.setBounds(0, 0, 455, 85);
 
         //======== panel1 ========
         {
@@ -134,6 +174,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
             //---- stopBttn ----
             stopBttn.setIcon(new ImageIcon(getClass().getResource("/playerIcons/stop32.png")));
             stopBttn.setHorizontalAlignment(SwingConstants.CENTER);
+            stopBttn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             stopBttn.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -145,6 +186,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
 
             //---- playBttn ----
             playBttn.setIcon(new ImageIcon(getClass().getResource("/playerIcons/play.png")));
+            playBttn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             playBttn.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -157,6 +199,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
             //---- pauseBttn ----
             pauseBttn.setIcon(new ImageIcon(getClass().getResource("/playerIcons/pause.png")));
             pauseBttn.setHorizontalAlignment(SwingConstants.CENTER);
+            pauseBttn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             pauseBttn.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -169,6 +212,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
             //---- skipBttn ----
             skipBttn.setHorizontalAlignment(SwingConstants.CENTER);
             skipBttn.setIcon(new ImageIcon(getClass().getResource("/playerIcons/skip.png")));
+            skipBttn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             skipBttn.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -180,12 +224,14 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
 
             //---- rewindBttn ----
             rewindBttn.setIcon(new ImageIcon(getClass().getResource("/playerIcons/rewind.png")));
+            rewindBttn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             panel1.add(rewindBttn);
             rewindBttn.setBounds(75, 15, 32, 32);
 
             //---- loopBttn ----
             loopBttn.setIcon(new ImageIcon(getClass().getResource("/playerIcons/replay.png")));
             loopBttn.setHorizontalAlignment(SwingConstants.CENTER);
+            loopBttn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             loopBttn.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -194,11 +240,32 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
             });
             panel1.add(loopBttn);
             loopBttn.setBounds(5, 0, 64, 64);
+
+            //---- volumeSlider ----
+            volumeSlider.setFont(volumeSlider.getFont().deriveFont(volumeSlider.getFont().getStyle() | Font.ITALIC));
+            volumeSlider.setForeground(Color.white);
+            volumeSlider.setMinorTickSpacing(5);
+            volumeSlider.setMajorTickSpacing(10);
+            volumeSlider.addChangeListener(e -> volumeChanged(e));
+            panel1.add(volumeSlider);
+            volumeSlider.setBounds(370, 15, 80, 32);
+
+            //---- volumeBttn ----
+            volumeBttn.setIcon(new ImageIcon(getClass().getResource("/playerIcons/volume.png")));
+            volumeBttn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            volumeBttn.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    volumeBttnClicked(e);
+                }
+            });
+            panel1.add(volumeBttn);
+            volumeBttn.setBounds(332, 15, 32, 32);
         }
         contentPane.add(panel1);
-        panel1.setBounds(0, 50, 390, 65);
+        panel1.setBounds(0, 85, 455, 65);
 
-        contentPane.setPreferredSize(new Dimension(405, 150));
+        contentPane.setPreferredSize(new Dimension(470, 185));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
@@ -213,11 +280,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
     private JLabel skipBttn;
     private JLabel rewindBttn;
     private JLabel loopBttn;
-
-    @Override
-    public void update(Observable observable, Object o) {
-        nowPlaying.setText(m_bundle.getString("getCurrentSong") + " " + musicPlayer.getCurrentSongName());
-    }
-
+    private JSlider volumeSlider;
+    private JLabel volumeBttn;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

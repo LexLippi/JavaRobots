@@ -23,12 +23,14 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
     private TargetModel targetModel;
     private RobotModel robotModel;
     private transient MusicPlayer musicPlayer;
+    protected ClosingHandler closingHandler;
 
     public GameVisualizer() 
     {
         targetModel = new TargetModel();
         robotModel = new RobotModel(getWidth(), getHeight(), targetModel);
         musicPlayer = new MusicPlayer((new File[] {new File("src/robotSounds/RobotMoving.wav")}));
+        closingHandler = new ClosingHandler(musicPlayer);
         targetModel.addObserver(this);
         robotModel.addObserver(this);
         addMouseListener(new MouseAdapter()

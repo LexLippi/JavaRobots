@@ -11,7 +11,6 @@ public class GameWindow extends JInternalFrame implements Serializable, Reopenab
 {
     private GameWindow window = this;
     private final GameVisualizer m_visualizer;
-    private ClosingHandler closingHandler = new ClosingHandler();
     public GameWindow(ResourceBundle bundle)
     {
         super(bundle.getString("gameFieldKey"), true, true, true, true);
@@ -22,7 +21,7 @@ public class GameWindow extends JInternalFrame implements Serializable, Reopenab
         getContentPane().add(panel);
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {
-                closingHandler.handleClosing(window, e, bundle, ClosingHandler.ClosingType.GAME );
+                m_visualizer.closingHandler.handleClosing(window, e, bundle, ClosingHandler.ClosingType.GAME );
             }
         });
         pack();
@@ -40,7 +39,7 @@ public class GameWindow extends JInternalFrame implements Serializable, Reopenab
     private void createNewClosingHandler(ResourceBundle bundle) {
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {
-                closingHandler.handleClosing(window, e, bundle, ClosingHandler.ClosingType.GAME);
+                m_visualizer.closingHandler.handleClosing(window, e, bundle, ClosingHandler.ClosingType.GAME);
             }
         });
     }

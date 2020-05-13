@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MusicPlayer extends Observable {
     private ConcurrentLinkedQueue<Song> songs = new ConcurrentLinkedQueue<>();
-    private FloatControl volumeLevel;
+    public FloatControl volumeLevel;
     private Clip clip;
     private final Listener lineListener = new Listener();
     private long clipTimePosition = 0;
@@ -35,6 +35,10 @@ public class MusicPlayer extends Observable {
         }
         currentSongName = songs.peek().getSongName();
         createNewClip();
+    }
+
+    public void setMusicVolume(float volume){
+        volumeLevel.setValue(volume);
     }
 
     public void setVolumeLevel(float volume) {
@@ -87,6 +91,10 @@ public class MusicPlayer extends Observable {
             clip.loop(clip.LOOP_CONTINUOUSLY);
         else
             clip.loop(0);
+    }
+
+    public void rewind(){
+
     }
 
     public void skip() {
