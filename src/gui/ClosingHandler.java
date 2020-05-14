@@ -9,11 +9,6 @@ import java.io.Serializable;
 import java.util.ResourceBundle;
 
 public class ClosingHandler implements Serializable {
-    MusicPlayer m_player;
-    public ClosingHandler(MusicPlayer player){
-        m_player = player;
-    }
-
     public ClosingHandler(){
 
     }
@@ -55,8 +50,8 @@ public class ClosingHandler implements Serializable {
                 noMessage = "notCloseMusicWindow";
         }
         if (answer == JOptionPane.YES_OPTION) {
-            if(m_player != null)
-                m_player.pause();
+            if (window instanceof Musical)
+                ((Musical) window).stopMusic();
             Logger.info(yesMessage);
             window.dispose();
         }

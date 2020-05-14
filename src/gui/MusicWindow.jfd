@@ -26,6 +26,36 @@ new FormModel {
 					"width": 455
 					"height": 45
 				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "currentPosition"
+					"text": "0:00"
+					"horizontalAlignment": 0
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 5
+					"y": 45
+					"width": 60
+					"height": 40
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "songLength"
+					"text": "-0:00"
+					"horizontalAlignment": 0
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 390
+					"y": 45
+					"width": 60
+					"height": 40
+				} )
+				add( new FormComponent( "javax.swing.JSlider" ) {
+					name: "currentPositionSlider"
+					"maximum": 101
+					"value": 0
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 65
+					"y": 45
+					"width": 325
+					"height": 40
+				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 0
 				"y": 0
@@ -38,7 +68,7 @@ new FormModel {
 				name: "panel1"
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "stopBttn"
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/resources.playerIcons/stop32.png" )
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/stop32.png" )
 					"horizontalAlignment": 0
 					"cursor": &Cursor0 new java.awt.Cursor( 12 )
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "stopBttnClicked", true ) )
@@ -61,7 +91,7 @@ new FormModel {
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "pauseBttn"
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/resources.playerIcons/pause.png" )
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/pause.png" )
 					"horizontalAlignment": 0
 					"cursor": #Cursor0
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "pauseBttnClicked", true ) )
@@ -87,6 +117,7 @@ new FormModel {
 					name: "rewindBttn"
 					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/rewind.png" )
 					"cursor": #Cursor0
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "rewindBttnClicked", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 75
 					"y": 15
@@ -95,7 +126,7 @@ new FormModel {
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "loopBttn"
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/resources.playerIcons/replay.png" )
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/playerIcons/replayblack.png" )
 					"horizontalAlignment": 0
 					"cursor": #Cursor0
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "loopBttnMouseClicked", true ) )

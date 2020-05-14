@@ -62,6 +62,11 @@ public class MusicPlayer extends Observable {
         return (volume-min)/(max-min);
     }
 
+    public float getCurrentPosition(){
+        clipTimePosition = clip.getMicrosecondPosition();
+        return clipTimePosition;
+    }
+
     public float getCurrentSongLength() {
         return songs.peek().getSongLengthInSeconds();
     }

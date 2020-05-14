@@ -7,7 +7,7 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 
-public class GameWindow extends JInternalFrame implements Serializable, Reopenable
+public class GameWindow extends JInternalFrame implements Serializable, Musical, Reopenable
 {
     private GameWindow window = this;
     private final GameVisualizer m_visualizer;
@@ -30,6 +30,10 @@ public class GameWindow extends JInternalFrame implements Serializable, Reopenab
     public void setMetadata(ResourceBundle bundle) {
         m_visualizer.setMetadata();
         createNewClosingHandler(bundle);
+    }
+
+    public void stopMusic(){
+        m_visualizer.stopMusic();
     }
 
     public void changeLanguage(ResourceBundle bundle){

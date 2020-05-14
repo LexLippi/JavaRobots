@@ -6,20 +6,18 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.event.*;
 
 import sound.MusicPlayer;
 
 
-public class MusicWindow extends JInternalFrame implements Serializable, Reopenable, Observer
+public class MusicWindow extends JInternalFrame implements Serializable, Reopenable, Musical, Observer
 {
     private MusicWindow musicWindow = this;
     private ResourceBundle m_bundle;
@@ -36,12 +34,17 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         musicPlayer = new MusicPlayer(songs);
         musicPlayer.addObserver(this);
         initComponents();
+        closingHandler = new ClosingHandler();
         this.setTitle(m_bundle.getString("musicPlayerTitleKey"));
         addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosing(InternalFrameEvent e) {
                 closingHandler.handleClosing(musicWindow, e, bundle, ClosingHandler.ClosingType.MUSIC);
             }
         });
+    }
+
+    public void stopMusic(){
+        musicPlayer.pause();
     }
 
     @Override
@@ -88,6 +91,8 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
     @Override
     public void update(Observable observable, Object o) {
         nowPlaying.setText(m_bundle.getString("getCurrentSong") + " " + musicPlayer.getCurrentSongName());
+        songLength.setText(Float.toString((musicPlayer.getCurrentSongLength())).replace('.', ':'));
+        currentPosition.setText(Float.toString(Math.round(musicPlayer.getCurrentPosition())).replace('.', ':'));
     }
 
     private void volumeChanged(ChangeEvent e) {
@@ -108,11 +113,18 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         muteStatus = !muteStatus;
     }
 
+    private void rewindBttnClicked(MouseEvent e) {
+        musicPlayer.getPreviousSong();
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - unknown
         currentSong = new JPanel();
         nowPlaying = new JLabel();
+        currentPosition = new JLabel();
+        songLength = new JLabel();
+        currentPositionSlider = new JSlider();
         panel1 = new JPanel();
         stopBttn = new JLabel();
         playBttn = new JLabel();
@@ -136,7 +148,13 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
 
         //======== currentSong ========
         {
-
+            currentSong.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new
+            javax. swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax
+            . swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java
+            .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt
+            . Color. red) ,currentSong. getBorder( )) ); currentSong. addPropertyChangeListener (new java. beans.
+            PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .
+            equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
             currentSong.setLayout(null);
 
             //---- nowPlaying ----
@@ -144,6 +162,24 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
             nowPlaying.setHorizontalAlignment(SwingConstants.CENTER);
             currentSong.add(nowPlaying);
             nowPlaying.setBounds(0, 0, 455, 45);
+
+            //---- currentPosition ----
+            currentPosition.setText("0:00");
+            currentPosition.setHorizontalAlignment(SwingConstants.CENTER);
+            currentSong.add(currentPosition);
+            currentPosition.setBounds(5, 45, 60, 40);
+
+            //---- songLength ----
+            songLength.setText("-0:00");
+            songLength.setHorizontalAlignment(SwingConstants.CENTER);
+            currentSong.add(songLength);
+            songLength.setBounds(390, 45, 60, 40);
+
+            //---- currentPositionSlider ----
+            currentPositionSlider.setMaximum(101);
+            currentPositionSlider.setValue(0);
+            currentSong.add(currentPositionSlider);
+            currentPositionSlider.setBounds(65, 45, 325, 40);
 
             {
                 // compute preferred size
@@ -221,11 +257,17 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
             //---- rewindBttn ----
             rewindBttn.setIcon(new ImageIcon(getClass().getResource("/playerIcons/rewind.png")));
             rewindBttn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            rewindBttn.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    rewindBttnClicked(e);
+                }
+            });
             panel1.add(rewindBttn);
             rewindBttn.setBounds(75, 15, 32, 32);
 
             //---- loopBttn ----
-            loopBttn.setIcon(new ImageIcon(getClass().getResource("/playerIcons/replay.png")));
+            loopBttn.setIcon(new ImageIcon(getClass().getResource("/playerIcons/replayblack.png")));
             loopBttn.setHorizontalAlignment(SwingConstants.CENTER);
             loopBttn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             loopBttn.addMouseListener(new MouseAdapter() {
@@ -269,6 +311,9 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
     // Generated using JFormDesigner Evaluation license - unknown
     private JPanel currentSong;
     private JLabel nowPlaying;
+    private JLabel currentPosition;
+    private JLabel songLength;
+    private JSlider currentPositionSlider;
     private JPanel panel1;
     private JLabel stopBttn;
     private JLabel playBttn;

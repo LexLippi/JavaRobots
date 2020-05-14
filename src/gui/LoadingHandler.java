@@ -33,7 +33,7 @@ public class LoadingHandler {
                 getClass().getResource("/songs/Frank Ocean - Chanel.wav"),
                 getClass().getResource("/songs/The Soul Machine - Twitchie Feet.wav"),
         }, bundle);
-        mainFrame.musicWindow.setSize(400,150);
+        mainFrame.musicWindow.setSize(490,180);
         mainFrame.addWindow(mainFrame.musicWindow);
         Logger.info("notLoadMessage");
     }
