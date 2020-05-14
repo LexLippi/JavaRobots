@@ -29,19 +29,19 @@ public class LoadingHandler {
         mainFrame.logWindow = mainFrame.createLogWindow();
         mainFrame.addWindow(mainFrame.logWindow);
         mainFrame.gameWindow = new GameWindow(bundle, robotModel, targetModel);
-        mainFrame.gameWindow.setSize(400,  400);
+        mainFrame.gameWindow.setBounds(220, 10, 400,400);
         mainFrame.addWindow(mainFrame.gameWindow);
         mainFrame.robotCoordinatesWindow = new RobotCoordinatesWindow(robotModel, bundle);
-        mainFrame.robotCoordinatesWindow.setSize(500, 100);
+        mainFrame.robotCoordinatesWindow.setBounds(620,210,500, 100);
         mainFrame.addWindow(mainFrame.robotCoordinatesWindow);
         mainFrame.distanceWindow = new DistanceWindow(robotModel, bundle);
-        mainFrame.distanceWindow.setSize(500, 100);
+        mainFrame.distanceWindow.setBounds(620,310,500, 100);
         mainFrame.addWindow(mainFrame.distanceWindow);
         mainFrame.musicWindow = new MusicWindow(new URL[] {
                 getClass().getResource("/songs/Frank Ocean - Chanel.wav"),
                 getClass().getResource("/songs/The Soul Machine - Twitchie Feet.wav"),
         }, bundle);
-        mainFrame.musicWindow.setSize(490,190);
+        mainFrame.musicWindow.setBounds(620,10,500,200);
         mainFrame.addWindow(mainFrame.musicWindow);
         Logger.info("notLoadMessage");
     }
