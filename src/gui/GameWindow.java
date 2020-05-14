@@ -22,11 +22,7 @@ public class GameWindow extends JInternalFrame implements Serializable, Musical,
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(m_visualizer, BorderLayout.CENTER);
         getContentPane().add(panel);
-        addInternalFrameListener(new InternalFrameAdapter() {
-            public void internalFrameClosing(InternalFrameEvent e) {
-                m_visualizer.closingHandler.handleClosing(window, e, bundle, ClosingHandler.ClosingType.GAME );
-            }
-        });
+        createNewClosingHandler(bundle);
         pack();
     }
 

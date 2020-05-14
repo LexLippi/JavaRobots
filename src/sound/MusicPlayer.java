@@ -2,9 +2,10 @@ package sound;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Observable;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class MusicPlayer extends Observable {
@@ -14,6 +15,7 @@ public class MusicPlayer extends Observable {
     private final Listener lineListener = new Listener();
     private long clipTimePosition = 0;
     private String currentSongName;
+    private final Timer timer = new Timer("events generator", true);;
     private Boolean isPaused = false;
 
     public MusicPlayer(URL[] urls) {
@@ -22,6 +24,19 @@ public class MusicPlayer extends Observable {
         }
         currentSongName = songs.peek().getSongName();
         createNewClip();
+        timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                changeTime();
+            }
+        }, 0, 20);
+    }
+
+    private void changeTime() {
+        notifyObservers();
+        setChanged();
     }
 
     public void deleteAllSongs() {
@@ -63,7 +78,7 @@ public class MusicPlayer extends Observable {
     }
 
     public float getCurrentPosition(){
-        clipTimePosition = clip.getMicrosecondPosition();
+        clipTimePosition = clip.getMicrosecondPosition() / 1000000;
         return clipTimePosition;
     }
 
@@ -94,8 +109,6 @@ public class MusicPlayer extends Observable {
         setCurrentSong(songs.peek().getSongName());
         clip.setMicrosecondPosition(clipTimePosition);
         clip.start();
-        notifyObservers();
-        setChanged();
     }
 
     public void loop(boolean status){
@@ -115,21 +128,21 @@ public class MusicPlayer extends Observable {
     }
 
     public void setPreviousSongToPeek() {
+        var volume = getVolumeLevel();
         clip.close();
-        var prevSong = songs.pop();
+        var prevSong = songs.removeLast();
         prevSong.rewind();
         songs.addFirst(prevSong);
-        var volume = getVolumeLevel();
         createNewClip();
         setVolumeLevel(volume);
     }
 
     public void setNextSongToPeek() {
+        var volume = getVolumeLevel();
         clip.close();
-        var song = songs.remove();
+        var song = songs.removeFirst();
         song.rewind();
         songs.addLast(song);
-        var volume = getVolumeLevel();
         createNewClip();
         setVolumeLevel(volume);
     }

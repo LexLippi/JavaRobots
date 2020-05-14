@@ -26,7 +26,7 @@ public class RobotModel extends Observable implements Serializable, Observer {
     public RobotModel(TargetModel targetModel) {
         this.targetModel = targetModel;
         this.targetModel.addObserver(this);
-        robotState = RobotState.MOVE;
+        robotState = RobotState.SHUTDOWN;
         m_timer.schedule(new TimerTask()
         {
             @Override
@@ -34,7 +34,7 @@ public class RobotModel extends Observable implements Serializable, Observer {
             {
                 onModelUpdateEvent();
             }
-        }, 0, 10);
+        }, 0, 20);
     }
 
     public void setMetadata() {
