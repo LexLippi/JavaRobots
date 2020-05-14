@@ -5,11 +5,12 @@ import game.RobotState;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 
-public class DistanceWindow  extends JInternalFrame implements Observer, Reopenable {
+public class DistanceWindow  extends JInternalFrame implements Serializable, Observer, Reopenable {
     private RobotModel robotModel;
     private JTable robotToTargetDistance;
 

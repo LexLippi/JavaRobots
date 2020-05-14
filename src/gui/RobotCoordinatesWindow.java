@@ -5,9 +5,10 @@ import game.RobotState;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.*;
 
-public class RobotCoordinatesWindow extends JInternalFrame implements Observer, Reopenable {
+public class RobotCoordinatesWindow extends JInternalFrame implements Serializable, Observer, Reopenable {
     private RobotModel robotModel;
     private JTable robotCoordinates;
 
