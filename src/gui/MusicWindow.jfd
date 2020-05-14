@@ -48,11 +48,12 @@ new FormModel {
 				} )
 				add( new FormComponent( "javax.swing.JSlider" ) {
 					name: "currentPositionSlider"
-					"maximum": 101
 					"value": 0
 					auxiliary() {
-						"JavaCodeGenerator.customCreateCode": "new JSlider((int) musicPlayer.volumeLevel.getMinimum()*50,(int) musicPlayer.volumeLevel.getMaximum()*100,(int) musicPlayer.volumeLevel.getValue()*100);"
+						"JavaCodeGenerator.customCreateCode": "new JSlider(0, (int) musicPlayer.getCurrentSongLength(), 0);"
+						"JavaCodeGenerator.postCreateCode": "currentPositionSlider.setMaximum((int)musicPlayer.getCurrentSongLength()); "
 					}
+					addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "currentPositionChanged", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 65
 					"y": 45
@@ -146,7 +147,7 @@ new FormModel {
 					"minorTickSpacing": 5
 					"majorTickSpacing": 10
 					auxiliary() {
-						"JavaCodeGenerator.customCreateCode": "new JSlider((int) musicPlayer.volumeLevel.getMinimum()*50,(int) musicPlayer.volumeLevel.getMaximum()*100,(int) musicPlayer.volumeLevel.getValue()*100);"
+						"JavaCodeGenerator.customCreateCode": "new JSlider((int) musicPlayer.volumeLevel.getMinimum()*100,(int) musicPlayer.volumeLevel.getMaximum()*100,(int) musicPlayer.volumeLevel.getValue()*100);"
 					}
 					addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "volumeChanged", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {

@@ -54,6 +54,11 @@ public class MusicPlayer extends Observable {
         createNewClip();
     }
 
+    public void setClipTimePosition(int position){
+        clip.setMicrosecondPosition(TimeUnit.SECONDS.toMicros(position));
+    }
+
+
     public void setMusicVolume(float volume){
         volumeLevel.setValue(volume);
     }
@@ -79,7 +84,7 @@ public class MusicPlayer extends Observable {
     }
 
     public float getCurrentPosition(){
-        clipTimePosition = clip.getMicrosecondPosition() / 1000000;
+        clipTimePosition = TimeUnit.MICROSECONDS.toSeconds(clip.getMicrosecondPosition());
         return clipTimePosition;
     }
 

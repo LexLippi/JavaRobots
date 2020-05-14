@@ -27,6 +27,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
     private boolean muteStatus = false;
     private float unmutedVolume;
     private ClosingHandler closingHandler;
+    private int curPos;
 
     public MusicWindow(URL[] songsUrls, ResourceBundle bundle) {
         m_bundle = bundle;
@@ -93,6 +94,8 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         nowPlaying.setText(m_bundle.getString("getCurrentSong") + " " + musicPlayer.getCurrentSongName());
         songLength.setText(String.format("%.2f", (int)((musicPlayer.getCurrentSongLength()) / 60) + ((musicPlayer.getCurrentSongLength()) % 60) / 100).replace(',', ':'));
         currentPosition.setText(String.format("%.2f", (int)((musicPlayer.getCurrentPosition()) / 60) + ((musicPlayer.getCurrentPosition()) % 60) / 100).replace(',', ':'));
+        currentPositionSlider.setValue((int)musicPlayer.getCurrentPosition());
+        currentPositionSlider.setMaximum((int)musicPlayer.getCurrentSongLength());
     }
 
     private void volumeChanged(ChangeEvent e) {
@@ -117,6 +120,17 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         musicPlayer.getPreviousSong();
     }
 
+    private void currentPositionChanged(ChangeEvent e) {
+        JSlider source = (JSlider) e.getSource();
+        if(source.getValueIsAdjusting()) {
+            musicPlayer.setClipTimePosition(source.getValue());
+        }
+    }
+
+    private void createUIComponents() {
+        // TODO: add custom component creation code here
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - unknown
@@ -124,7 +138,8 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         nowPlaying = new JLabel();
         currentPosition = new JLabel();
         songLength = new JLabel();
-        currentPositionSlider = new JSlider((int) musicPlayer.volumeLevel.getMinimum()*50,(int) musicPlayer.volumeLevel.getMaximum()*100,(int) musicPlayer.volumeLevel.getValue()*100);
+        currentPositionSlider = new JSlider(0, (int) musicPlayer.getCurrentSongLength(), 0);
+        currentPositionSlider.setMaximum((int)musicPlayer.getCurrentSongLength());
         panel1 = new JPanel();
         stopBttn = new JLabel();
         playBttn = new JLabel();
@@ -132,7 +147,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         skipBttn = new JLabel();
         rewindBttn = new JLabel();
         loopBttn = new JLabel();
-        volumeSlider = new JSlider((int) musicPlayer.volumeLevel.getMinimum()*50,(int) musicPlayer.volumeLevel.getMaximum()*100,(int) musicPlayer.volumeLevel.getValue()*100);
+        volumeSlider = new JSlider((int) musicPlayer.volumeLevel.getMinimum()*100,(int) musicPlayer.volumeLevel.getMaximum()*100,(int) musicPlayer.volumeLevel.getValue()*100);
         volumeBttn = new JLabel();
 
         //======== this ========
@@ -148,12 +163,11 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
 
         //======== currentSong ========
         {
-            currentSong.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing.
-            border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER
-            , javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font
-            .BOLD ,12 ), java. awt. Color. red) ,currentSong. getBorder( )) ); currentSong. addPropertyChangeListener (
-            new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062order"
-            .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+            currentSong.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder ( 0
+            , 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM
+            , new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,java . awt. Color .red ) ,
+            currentSong. getBorder () ) ); currentSong. addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e
+            ) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
             currentSong.setLayout(null);
 
             //---- nowPlaying ----
@@ -175,8 +189,8 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
             songLength.setBounds(390, 45, 60, 40);
 
             //---- currentPositionSlider ----
-            currentPositionSlider.setMaximum(101);
             currentPositionSlider.setValue(0);
+            currentPositionSlider.addChangeListener(e -> currentPositionChanged(e));
             currentSong.add(currentPositionSlider);
             currentPositionSlider.setBounds(65, 45, 325, 40);
 
