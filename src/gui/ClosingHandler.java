@@ -14,7 +14,7 @@ public class ClosingHandler implements Serializable {
     }
 
     public enum ClosingType{
-        GAME, LOG, MUSIC
+        GAME, LOG, MUSIC, DISTANCE, COORDINATES
     }
 
     private enum Context{
@@ -37,6 +37,14 @@ public class ClosingHandler implements Serializable {
         String yesMessage = "";
         String noMessage = "";
         switch (type) {
+            case DISTANCE:
+                yesMessage = "closeDistanceWindow";
+                noMessage = "notCloseDistanceWindow";
+                break;
+            case COORDINATES:
+                yesMessage = "closeCoordinatesWindow";
+                noMessage = "notCloseCoordinatesWindow";
+                break;
             case GAME:
                 yesMessage = "closeGameWindow";
                 noMessage = "notCloseGameWindow";
@@ -48,6 +56,7 @@ public class ClosingHandler implements Serializable {
             case MUSIC:
                 yesMessage = "closeMusicWindow";
                 noMessage = "notCloseMusicWindow";
+                break;
         }
         if (answer == JOptionPane.YES_OPTION) {
             if (window instanceof Musical)

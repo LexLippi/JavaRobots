@@ -49,7 +49,12 @@ public class Bundle_ru extends ListResourceBundle implements Serializable{
             {"getTitleRobotHorizontalCoordinate", "Горизонтальная координата"},
             {"getTitleRobotVerticalCoordinate", "Вертикальная координата"},
             {"getRobotName", "Поросенок Пётр"},
-            {"getTitleRobotDistance", "Расстояние до цели"}
+            {"getTitleRobotDistance", "Расстояние до цели"},
+            {"getTitleRobotCoordinates", "Координаты робота"},
+            {"closeDistanceWindow", "Закрыто окно \"Расстояние до цели\""},
+            {"notCloseDistanceWindow", "Не закрыто окно \"Расстояние до цели\""},
+            {"closeCoordinatesWindow", "Закрыто окно \"Координаты робота\""},
+            {"notCloseCoordinatesWindow", "Не закрыто окно \"Координаты робота\""}
     };
 
     @Override

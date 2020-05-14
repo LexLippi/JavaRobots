@@ -13,12 +13,18 @@ public class RobotCoordinatesWindow extends JInternalFrame implements Serializab
     private JTable robotCoordinates;
 
     public RobotCoordinatesWindow(RobotModel robotModel, ResourceBundle bundle) {
+        setVisible(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setClosable(true);
         var columnsHeader = new String[] {bundle.getString("getTitleRobotName"),
                 bundle.getString("getTitleRobotHorizontalCoordinate"),
                 bundle.getString("getTitleRobotVerticalCoordinate")};
         var robotData = new Object[][] {{bundle.getString("getRobotName"),
                 robotModel.getRobotPositionX(), robotModel.getRobotPositionY()}};
         var panel = new JPanel(new BorderLayout());
+        setTitle(bundle.getString("getTitleRobotCoordinates"));
         robotCoordinates = new JTable(robotData, columnsHeader);
         panel.add(new JScrollPane(robotCoordinates), BorderLayout.CENTER);
         getContentPane().add(panel);
@@ -28,7 +34,11 @@ public class RobotCoordinatesWindow extends JInternalFrame implements Serializab
     }
 
     public void changeLanguage(ResourceBundle nextBundle){
-
+        setTitle(nextBundle.getString("getTitleRobotCoordinates"));
+        robotCoordinates.getColumnModel().getColumn(0).setHeaderValue(nextBundle.getString("getTitleRobotName"));
+        robotCoordinates.getColumnModel().getColumn(1).setHeaderValue(nextBundle.getString("getTitleRobotHorizontalCoordinate"));
+        robotCoordinates.getColumnModel().getColumn(2).setHeaderValue(nextBundle.getString("getTitleRobotVerticalCoordinate"));
+        robotCoordinates.getModel().setValueAt(nextBundle.getString("getRobotName"), 0,0);
     }
 
     @Override

@@ -36,6 +36,7 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
         this.targetModel = targetModel;
         this.robotModel = robotModel;
         this.robotModel.setFieldSize(getWidth(), getHeight());
+        closingHandler = new ClosingHandler();
         var url = getClass().getResource("/robotSounds/RobotMoving.wav");
         musicPlayer = new MusicPlayer((new URL[] {url}));
         targetModel.addObserver(this);

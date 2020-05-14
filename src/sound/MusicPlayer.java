@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Observable;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.TimeUnit;
 
 public class MusicPlayer extends Observable {
     private ConcurrentLinkedDeque<Song> songs = new ConcurrentLinkedDeque<>();
@@ -64,7 +65,7 @@ public class MusicPlayer extends Observable {
 
     public float getCurrentPosition(){
         clipTimePosition = clip.getMicrosecondPosition();
-        return clipTimePosition;
+        return TimeUnit.MICROSECONDS.toSeconds(clipTimePosition);
     }
 
     public float getCurrentSongLength() {

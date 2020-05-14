@@ -17,7 +17,7 @@ import javax.swing.event.*;
 import sound.MusicPlayer;
 
 
-public class MusicWindow extends JInternalFrame implements Serializable, Reopenable, Musical, Observer
+public class MusicWindow extends JInternalFrame implements Serializable, Reopenable, Musical, Multilangual, Observer
 {
     private MusicWindow musicWindow = this;
     private ResourceBundle m_bundle;
@@ -32,7 +32,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         m_bundle = bundle;
         this.songs = songsUrls;
         musicPlayer = new MusicPlayer(songs);
-        musicPlayer.addObserver(this);
+        this.musicPlayer.addObserver(this);
         initComponents();
         closingHandler = new ClosingHandler();
         this.setTitle(m_bundle.getString("musicPlayerTitleKey"));
@@ -91,8 +91,8 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
     @Override
     public void update(Observable observable, Object o) {
         nowPlaying.setText(m_bundle.getString("getCurrentSong") + " " + musicPlayer.getCurrentSongName());
-        songLength.setText(Float.toString((musicPlayer.getCurrentSongLength())).replace('.', ':'));
-        currentPosition.setText(Float.toString(Math.round(musicPlayer.getCurrentPosition())).replace('.', ':'));
+        songLength.setText(String.format("%.2f", (int)((musicPlayer.getCurrentSongLength()) / 60) + ((musicPlayer.getCurrentSongLength()) % 60) / 100).replace(',', ':'));
+        currentPosition.setText(String.format("%.2f", (int)((musicPlayer.getCurrentPosition()) / 60) + ((musicPlayer.getCurrentPosition()) % 60) / 100).replace(',', ':'));
     }
 
     private void volumeChanged(ChangeEvent e) {
@@ -124,7 +124,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         nowPlaying = new JLabel();
         currentPosition = new JLabel();
         songLength = new JLabel();
-        currentPositionSlider = new JSlider();
+        currentPositionSlider = new JSlider((int) musicPlayer.volumeLevel.getMinimum()*50,(int) musicPlayer.volumeLevel.getMaximum()*100,(int) musicPlayer.volumeLevel.getValue()*100);
         panel1 = new JPanel();
         stopBttn = new JLabel();
         playBttn = new JLabel();
@@ -148,13 +148,12 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
 
         //======== currentSong ========
         {
-            currentSong.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax.
-            swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border
-            . TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog"
-            ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) ,currentSong. getBorder
-            ( )) ); currentSong. addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java
-            .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException
-            ( ); }} );
+            currentSong.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing.
+            border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER
+            , javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font
+            .BOLD ,12 ), java. awt. Color. red) ,currentSong. getBorder( )) ); currentSong. addPropertyChangeListener (
+            new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062order"
+            .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
             currentSong.setLayout(null);
 
             //---- nowPlaying ----

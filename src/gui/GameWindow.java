@@ -10,7 +10,7 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 
-public class GameWindow extends JInternalFrame implements Serializable, Musical, Reopenable
+public class GameWindow extends JInternalFrame implements Serializable, Musical, Reopenable, Multilangual
 {
     private GameWindow window = this;
     private final GameVisualizer m_visualizer;

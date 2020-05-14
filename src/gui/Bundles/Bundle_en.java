@@ -49,7 +49,13 @@ public class Bundle_en extends ListResourceBundle implements Serializable{
             {"getTitleRobotHorizontalCoordinate", "Horizontal coordinate"},
             {"getTitleRobotVerticalCoordinate", "Vertical coordinate"},
             {"getRobotName", "Pig Peter"},
-            {"getTitleRobotDistance", "Distance to target"}
+            {"getTitleRobotDistance", "Distance to target"},
+            {"getTitleRobotCoordinates", "Robot Coordinates"},
+            {"closeDistanceWindow", "Close distance window"},
+            {"notCloseDistanceWindow", "Don't close distance window"},
+            {"closeCoordinatesWindow", "Close coordinates window"},
+            {"notCloseCoordinatesWindow", "Don't close coordinates window"}
+
     };
 
     @Override

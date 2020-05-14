@@ -12,7 +12,7 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 
-public class LogWindow extends JInternalFrame implements LogChangeListener, Serializable, Reopenable
+public class LogWindow extends JInternalFrame implements LogChangeListener, Serializable, Reopenable, Multilangual
 {
     private LogWindow window = this;
     private transient LogWindowSource m_logSource;

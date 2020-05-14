@@ -50,6 +50,9 @@ new FormModel {
 					name: "currentPositionSlider"
 					"maximum": 101
 					"value": 0
+					auxiliary() {
+						"JavaCodeGenerator.customCreateCode": "new JSlider((int) musicPlayer.volumeLevel.getMinimum()*50,(int) musicPlayer.volumeLevel.getMaximum()*100,(int) musicPlayer.volumeLevel.getValue()*100);"
+					}
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 65
 					"y": 45
