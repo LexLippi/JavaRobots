@@ -12,8 +12,6 @@ public class Song{
     public Song (URL url) {
         this.url = url;
         rewind();
-        System.out.println(url);
-        System.out.println(url.getFile());
         lengthInSeconds = stream.getFrameLength() / stream.getFormat().getFrameRate();
     }
 

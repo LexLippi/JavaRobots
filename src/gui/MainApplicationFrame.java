@@ -21,6 +21,8 @@ public class MainApplicationFrame extends JFrame
     public GameWindow gameWindow;
     public LogWindow logWindow;
     public MusicWindow musicWindow;
+    public RobotCoordinatesWindow robotCoordinatesWindow;
+    public DistanceWindow distanceWindow;
 
 
     public MainApplicationFrame(ResourceBundle bundle) {
@@ -79,6 +81,8 @@ public class MainApplicationFrame extends JFrame
                 logWindow.changeLanguage(nextBundle);
                 gameWindow.changeLanguage(nextBundle);
                 musicWindow.changeLanguage(nextBundle);
+                robotCoordinatesWindow.changeLanguage(nextBundle);
+                distanceWindow.changeLanguage(nextBundle);
                 saveWindowStates();
                 RobotsProgram.restart(nextBundle, this);
             }

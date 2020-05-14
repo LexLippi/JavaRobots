@@ -44,7 +44,12 @@ public class Bundle_ru extends ListResourceBundle implements Serializable{
             {"getCurrentSong", "Сейчас играет"},
             {"musicPlayerTitleKey", "Музыкальный проигрыватель"},
             {"closeMusicWindow", "Закрыт музыкальный проигрыватель"},
-            {"notCloseMusicWindow", "Не закрыт музыкальный проигрыватель"}
+            {"notCloseMusicWindow", "Не закрыт музыкальный проигрыватель"},
+            {"getTitleRobotName", "Имя робота"},
+            {"getTitleRobotHorizontalCoordinate", "Горизонтальная координата"},
+            {"getTitleRobotVerticalCoordinate", "Вертикальная координата"},
+            {"getRobotName", "Поросенок Пётр"},
+            {"getTitleRobotDistance", "Расстояние до цели"}
     };
 
     @Override

@@ -1,5 +1,8 @@
 package gui;
 
+import game.RobotModel;
+import game.TargetModel;
+
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -11,11 +14,11 @@ public class GameWindow extends JInternalFrame implements Serializable, Musical,
 {
     private GameWindow window = this;
     private final GameVisualizer m_visualizer;
-    public GameWindow(ResourceBundle bundle)
+    public GameWindow(ResourceBundle bundle, RobotModel robotModel, TargetModel targetModel)
     {
         super(bundle.getString("gameFieldKey"), true, true, true, true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        m_visualizer = new GameVisualizer();
+        m_visualizer = new GameVisualizer(robotModel, targetModel);
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(m_visualizer, BorderLayout.CENTER);
         getContentPane().add(panel);
