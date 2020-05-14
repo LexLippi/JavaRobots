@@ -40,7 +40,7 @@ public class MusicPlayer extends Observable {
     }
 
     public void deleteAllSongs() {
-        stop();
+        clip.close();
         songs.clear();
         currentSongName = null;
     }
@@ -87,7 +87,7 @@ public class MusicPlayer extends Observable {
     }
 
     public void getPreviousSong() {
-        isPaused = false;
+        isPaused = true;
         setPreviousSongToPeek();
         play();
     }
@@ -161,6 +161,7 @@ public class MusicPlayer extends Observable {
         try {
             clip = AudioSystem.getClip();
             clip.open(songs.peek().getSong());
+
             clip.addLineListener(lineListener);
             volumeLevel = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         } catch (LineUnavailableException | IOException e) {
