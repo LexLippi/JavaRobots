@@ -72,13 +72,13 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
     }
 
     public void setMetadata() {
-        robotModel.setMetadata();
-        targetModel.addObserver(this);
-        robotModel.addObserver(this);
         var url = getClass().getResource("/robotSounds/RobotMoving.wav");
         musicPlayer = new MusicPlayer((new URL[] {url}));
         musicPlayer.play();
         musicPlayer.setVolumeLevel(0.9f);
+        robotModel.setMetadata();
+        targetModel.addObserver(this);
+        robotModel.addObserver(this);
         addMouseListener(new MouseAdapter()
         {
             @Override
@@ -91,6 +91,7 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
                 musicPlayer.play();
             }
         });
+        setDoubleBuffered(true);
         addComponentListener(new ResizeListener());
         onRedrawEvent();
     }

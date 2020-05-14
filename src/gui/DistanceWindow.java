@@ -1,7 +1,6 @@
 package gui;
 
 import game.RobotModel;
-import game.RobotState;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
@@ -46,17 +45,7 @@ public class DistanceWindow  extends JInternalFrame implements Serializable, Obs
 
     @Override
     public void update(Observable observable, Object o) {
-        var robotState = (RobotState)o;
-        switch (robotState) {
-            case MOVE:
-            case SHUTDOWN:
-                robotToTargetDistance.setValueAt(robotModel.getDistanceToTarget(), 0, 1);
-                break;
-            case STAND:
-                break;
-            default:
-                throw new IllegalStateException("Update GameVisualizer received illegal robot state");
-        }
+        robotToTargetDistance.setValueAt(robotModel.getDistanceToTarget(), 0, 1);
     }
 
     public void changeLanguage(ResourceBundle nextBundle){

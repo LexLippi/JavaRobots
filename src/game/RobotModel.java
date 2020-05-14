@@ -16,6 +16,7 @@ public class RobotModel extends Observable implements Serializable, Observer {
     private volatile double m_robotDirection = 0;
     private static final double maxVelocity = 0.1;
     private static final double maxAngularVelocity = 0.001;
+    private double distanceToTarget;
     private volatile RobotState robotState;
 
     private static Timer createTimer()
@@ -27,6 +28,8 @@ public class RobotModel extends Observable implements Serializable, Observer {
         this.targetModel = targetModel;
         this.targetModel.addObserver(this);
         robotState = RobotState.SHUTDOWN;
+        distanceToTarget = distance(targetModel.getTargetPositionX(), targetModel.getTargetPositionY(),
+                m_robotPositionX, m_robotPositionY);
         m_timer.schedule(new TimerTask()
         {
             @Override
@@ -38,6 +41,7 @@ public class RobotModel extends Observable implements Serializable, Observer {
     }
 
     public void setMetadata() {
+        this.targetModel.addObserver(this);
         m_timer = createTimer();
         m_timer.schedule(new TimerTask()
         {
@@ -46,7 +50,7 @@ public class RobotModel extends Observable implements Serializable, Observer {
             {
                 onModelUpdateEvent();
             }
-        }, 0, 10);
+        }, 0, 20);
     }
 
     public void setFieldSize(float fieldWidth, float fieldHeight) {
@@ -71,14 +75,21 @@ public class RobotModel extends Observable implements Serializable, Observer {
         setChanged();
     }
 
+    private void updateDistanceToTarget() {
+        distanceToTarget = robotState == RobotState.MOVE  ?
+                distance(targetModel.getTargetPositionX(), targetModel.getTargetPositionY(), m_robotPositionX,
+                        m_robotPositionY) : 0;
+    }
+
     public double getDistanceToTarget() {
-        return distance(targetModel.getTargetPositionX(), targetModel.getTargetPositionY(),
-                m_robotPositionX, m_robotPositionY);
+        return distanceToTarget;
     }
 
     protected void onModelUpdateEvent()
     {
-        double distance = getDistanceToTarget();
+        double distance = distance(targetModel.getTargetPositionX(), targetModel.getTargetPositionY(),
+                m_robotPositionX, m_robotPositionY);
+        updateDistanceToTarget();
         if (distance < 0.5) {
             if (robotState == RobotState.MOVE) {
                 robotState = RobotState.SHUTDOWN;
@@ -100,8 +111,8 @@ public class RobotModel extends Observable implements Serializable, Observer {
         {
             angularVelocity = -maxAngularVelocity;
         }
-        moveRobot(maxVelocity, angularVelocity, 10);
         robotState = RobotState.MOVE;
+        moveRobot(maxVelocity, angularVelocity, 10);
         notifyObservers(robotState);
         setChanged();
     }
@@ -182,6 +193,6 @@ public class RobotModel extends Observable implements Serializable, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        onModelUpdateEvent();
+        updateDistanceToTarget();
     }
 }
