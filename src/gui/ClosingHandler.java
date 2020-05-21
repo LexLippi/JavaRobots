@@ -59,8 +59,6 @@ public class ClosingHandler implements Serializable {
                 break;
         }
         if (answer == JOptionPane.YES_OPTION) {
-            if (window instanceof Musical)
-                ((Musical) window).stopMusic();
             Logger.info(yesMessage);
             window.dispose();
         }

@@ -17,7 +17,7 @@ import javax.swing.event.*;
 import sound.MusicPlayer;
 
 
-public class MusicWindow extends JInternalFrame implements Serializable, Reopenable, Musical, Multilangual, Observer
+public class MusicWindow extends JInternalFrame implements Serializable, Reopenable, Multilangual, Observer
 {
     private MusicWindow musicWindow = this;
     private ResourceBundle m_bundle;
@@ -44,7 +44,7 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         });
     }
 
-    public void stopMusic(){
+    private void stopMusic(){
         musicPlayer.pause();
     }
 
@@ -96,6 +96,12 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         currentPosition.setText(String.format("%.2f", (int)((musicPlayer.getCurrentPosition()) / 60) + ((musicPlayer.getCurrentPosition()) % 60) / 100).replace(',', ':'));
         currentPositionSlider.setValue((int)musicPlayer.getCurrentPosition());
         currentPositionSlider.setMaximum((int)musicPlayer.getCurrentSongLength());
+    }
+
+    @Override
+    public void dispose(){
+        stopMusic();
+        super.dispose();
     }
 
     private void volumeChanged(ChangeEvent e) {
