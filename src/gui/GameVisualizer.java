@@ -68,7 +68,7 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
     }
 
     public void stopMusic(){
-        musicPlayer.pause();
+        musicPlayer.stop();
     }
 
     public void setMetadata() {
@@ -159,10 +159,12 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
                 onRedrawEvent();
                 break;
             case SHUTDOWN:
-                musicPlayer.deleteAllSongs();
-                var url = getClass().getResource("/robotSounds/RobotStanding.wav");
-                musicPlayer.addNewSongs((new URL[] {url}));
-                musicPlayer.play();
+                if(!musicPlayer.getPaused()) {
+                    musicPlayer.deleteAllSongs();
+                    var url = getClass().getResource("/robotSounds/RobotStanding.wav");
+                    musicPlayer.addNewSongs((new URL[]{url}));
+                    musicPlayer.play();
+                }
                 break;
             default:
                 throw new IllegalStateException("Update GameVisualizer received illegal robot state");

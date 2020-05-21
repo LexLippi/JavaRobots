@@ -75,6 +75,9 @@ public class MusicPlayer extends Observable {
         volumeLevel.setValue((max-min)*volume+min);
     }
 
+    public Boolean getPaused() {
+        return isPaused;
+    }
 
     public float getVolumeLevel() {
         float volume = volumeLevel.getValue();

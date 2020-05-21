@@ -27,7 +27,8 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
     private boolean muteStatus = false;
     private float unmutedVolume;
     private ClosingHandler closingHandler;
-    private int curPos;
+    private boolean isChanged;
+    private int pos;
 
     public MusicWindow(URL[] songsUrls, ResourceBundle bundle) {
         m_bundle = bundle;
@@ -94,7 +95,8 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
         nowPlaying.setText(m_bundle.getString("getCurrentSong") + " " + musicPlayer.getCurrentSongName());
         songLength.setText(String.format("%.2f", (int)((musicPlayer.getCurrentSongLength()) / 60) + ((musicPlayer.getCurrentSongLength()) % 60) / 100).replace(',', ':'));
         currentPosition.setText(String.format("%.2f", (int)((musicPlayer.getCurrentPosition()) / 60) + ((musicPlayer.getCurrentPosition()) % 60) / 100).replace(',', ':'));
-        currentPositionSlider.setValue((int)musicPlayer.getCurrentPosition());
+        if(!isChanged)
+            currentPositionSlider.setValue((int)musicPlayer.getCurrentPosition());
         currentPositionSlider.setMaximum((int)musicPlayer.getCurrentSongLength());
     }
 
@@ -129,8 +131,14 @@ public class MusicWindow extends JInternalFrame implements Serializable, Reopena
     private void currentPositionChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
         if(source.getValueIsAdjusting()) {
-            musicPlayer.setClipTimePosition(source.getValue());
+            isChanged = true;
+            pos = source.getValue();
         }
+        else
+            if(isChanged) {
+                musicPlayer.setClipTimePosition(pos);
+                isChanged = false;
+            }
     }
 
     private void createUIComponents() {
