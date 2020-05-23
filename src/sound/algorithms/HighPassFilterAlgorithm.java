@@ -6,15 +6,15 @@ import org.apache.commons.math3.transform.TransformType;
 import sound.Song;
 import javax.sound.sampled.AudioFormat;
 
+public class HighPassFilterAlgorithm extends SoundAlgorithm {
+    private double highPass;
 
-public class LowPassFilterAlgorithm extends SoundAlgorithm {
-    private double lowPass;
-
-    public LowPassFilterAlgorithm(double lowPass) {
-        this.lowPass = lowPass;
+    public HighPassFilterAlgorithm(double highPass) {
+        this.highPass = highPass;
     }
 
-    protected double[] getAlgorithmResult(double[] data, double frequency) {
+    @Override
+    double[] getAlgorithmResult(double[] data, double frequency) {
         var padded = new double[getMinimumDegreeOfTwoMoreThanNumber(data.length)];
         System.arraycopy(data, 0, padded, 0, data.length);
 
@@ -29,7 +29,7 @@ public class LowPassFilterAlgorithm extends SoundAlgorithm {
         var keepPoints = new double[frequencyDomain.length];
         keepPoints[0] = 1;
         for (var i = 1; i < frequencyDomain.length; ++i) {
-            keepPoints[i] = frequencyDomain[i] < lowPass ? 2 : 0;
+            keepPoints[i] = frequencyDomain[i] > highPass ? 2 : 0;
         }
 
         for (var i = 0; i < fourierTransform.length; ++i) {
@@ -45,7 +45,8 @@ public class LowPassFilterAlgorithm extends SoundAlgorithm {
         return result;
     }
 
-    protected Song getSongFromBytes(byte[] bytes, AudioFormat format, String songName) {
-        return new Song(bytes, format, "Low Pass " +  songName);
+    @Override
+    Song getSongFromBytes(byte[] bytes, AudioFormat format, String songName) {
+        return new Song(bytes, format, "High Pass " +  songName);
     }
 }
