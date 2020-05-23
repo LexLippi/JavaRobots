@@ -12,10 +12,10 @@ public class ProgramPreferences {
     public ProgramPreferences(){
         prefs = Preferences.userRoot().node("pref");
         try {
-            defaultBundle = ResourceBundle.getBundle("gui.Bundles.Bundle",
+            defaultBundle = ResourceBundle.getBundle("Bundles.Bundle",
                             new Locale(System.getProperty("user.language"), System.getProperty("user.country")));
         } catch (MissingResourceException e){
-            defaultBundle = ResourceBundle.getBundle("gui.Bundles.Bundle",
+            defaultBundle = ResourceBundle.getBundle("Bundles.Bundle",
                             new Locale("en", "EN"));
         }
 
@@ -24,7 +24,7 @@ public class ProgramPreferences {
     enum Bundles{
         RU, EN;
         static ResourceBundle toBundle(Bundles bundleKey){
-            return ResourceBundle.getBundle("gui.Bundles.Bundle",
+            return ResourceBundle.getBundle("Bundles.Bundle",
                     new Locale(bundleKey.toString().toLowerCase(), bundleKey.toString()));
         }
     }

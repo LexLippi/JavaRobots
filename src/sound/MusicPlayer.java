@@ -3,6 +3,7 @@ package sound;
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,6 +25,20 @@ public class MusicPlayer extends Observable {
             songs.add(new Song(url));
         }
         currentSongName = songs.peek().getSongName();
+        createNewClip();
+        timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                changeTime();
+            }
+        }, 0, 20);
+    }
+
+    public MusicPlayer(Song[] songs) {
+        this.songs.addAll(Arrays.asList(songs));
+        currentSongName = this.songs.peek().getSongName();
         createNewClip();
         timer.schedule(new TimerTask()
         {
@@ -170,7 +185,7 @@ public class MusicPlayer extends Observable {
         try {
             clip = AudioSystem.getClip();
             clip.open(songs.peek().getSong());
-
+            System.out.println(this.songs);
             clip.addLineListener(lineListener);
             volumeLevel = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         } catch (LineUnavailableException | IOException e) {

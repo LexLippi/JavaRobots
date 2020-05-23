@@ -1,4 +1,4 @@
-package gui.Bundles;
+package bundles;
 
 import java.io.Serializable;
 import java.util.ListResourceBundle;

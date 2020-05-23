@@ -1,18 +1,28 @@
 package sound;
 
 import javax.sound.sampled.*;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 
 public class Song{
     private AudioInputStream stream;
+    private String songName;
     private float lengthInSeconds;
-    private URL url;
+    private byte[] songData;
+    private AudioFormat songFormat;
 
     public Song (URL url) {
-        this.url = url;
-        rewind();
-        lengthInSeconds = stream.getFrameLength() / stream.getFormat().getFrameRate();
+        try {
+            var stream = createStreamFromUrl(url);
+            createNewSong(stream.readAllBytes(), stream.getFormat(), createSongNameFromUrl(url));
+        } catch (IOException | NullPointerException e) {
+            System.out.println("File " + url.getFile() + " is not audio");;
+        }
+    }
+
+    public Song(byte[] songData, AudioFormat songFormat, String songName) {
+        createNewSong(songData, songFormat, songName);
     }
 
     public AudioInputStream getSong() {
@@ -20,20 +30,37 @@ public class Song{
     }
 
     public String getSongName() {
-        var partsFilename = url.getFile().split("/");
-        return partsFilename[partsFilename.length - 1].replace("%20", " ");
+        return songName;
     }
 
     public void rewind() {
-        try {
-            stream = AudioSystem.getAudioInputStream(url);
-        } catch (IOException | UnsupportedAudioFileException e) {
-            System.out.println("File " + url.getFile() + " is not audio");
-        }
+        stream = new AudioInputStream(new ByteArrayInputStream(songData), songFormat, songData.length);
     }
 
     public float getSongLengthInSeconds() {
         return lengthInSeconds;
+    }
+
+    private String createSongNameFromUrl(URL url) {
+        var partsFilename = url.getFile().split("/");
+        return partsFilename[partsFilename.length - 1].replace("%20", " ");
+    }
+
+    private AudioInputStream createStreamFromUrl(URL url) {
+        try {
+            return AudioSystem.getAudioInputStream(url);
+        } catch (IOException | UnsupportedAudioFileException e) {
+            System.out.println("File " + url.getFile() + " is not audio");
+        }
+        return null;
+    }
+
+    private void createNewSong(byte[] songData, AudioFormat songFormat, String songName) {
+        this.songData = songData;
+        this.songName = songName;
+        this.songFormat = songFormat;
+        rewind();
+        lengthInSeconds = stream.getFrameLength() / stream.getFormat().getFrameRate();
     }
 }
 
