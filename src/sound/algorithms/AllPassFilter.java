@@ -30,15 +30,4 @@ public class AllPassFilter extends SoundFilter{
     Song getSongFromBytes(byte[] bytes, AudioFormat format, String songName) {
         return new Song(bytes, format, "All pass " + songName);
     }
-
-    public static void main(String[] args) throws MalformedURLException, InterruptedException {
-        var songPath = "C:\\Users\\aleks\\Desktop\\Study\\Java\\Robots\\resources\\songs\\TestSample.wav";
-        var song = new Song(new File(songPath).toURL());
-        var filter = new AllPassFilter(.9f);
-        var newSong = filter.transformateSong(song);
-        var player = new MusicPlayer(new Song[] {newSong});
-        player.play();
-        Thread.sleep(50000);
-        player.stop();
-    }
 }
