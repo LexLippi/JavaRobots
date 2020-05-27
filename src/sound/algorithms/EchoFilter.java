@@ -14,17 +14,19 @@ public class EchoFilter extends SoundFilter {
     }
 
     @Override
-    protected void filter(byte[] data) {
-        for (var i = 0; i < data.length - 1; i += 2) {
+    protected byte[] getFilteredData(byte[] data) {
+        var result = new byte[data.length];
+        for (var i = 0; i < data.length; i += 2) {
             var oldSample = getSample(data, i);
             var newSample = (short) (oldSample + decay * delayBuffer[delayBufferPos]);
-            setSample(data, i, newSample);
+            setSample(result, i, newSample);
             delayBuffer[delayBufferPos] = newSample;
             delayBufferPos++;
             if (delayBufferPos == delayBuffer.length) {
                 delayBufferPos = 0;
             }
         }
+        return result;
     }
 
     @Override

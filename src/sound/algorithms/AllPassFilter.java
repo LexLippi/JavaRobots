@@ -1,11 +1,7 @@
 package sound.algorithms;
 
-import sound.MusicPlayer;
 import sound.Song;
-
 import javax.sound.sampled.AudioFormat;
-import java.io.File;
-import java.net.MalformedURLException;
 
 public class AllPassFilter extends SoundFilter{
     private float gainValue;
@@ -17,13 +13,15 @@ public class AllPassFilter extends SoundFilter{
     }
 
     @Override
-    void filter(byte[] data) {
+    byte[] getFilteredData(byte[] data) {
+        var result = new byte[data.length];
         for (var i = 0; i < data.length; i += 2) {
             var sample = getSample(data, i);
             filteredPreviousSample = (gainValue * (filteredPreviousSample - sample)) + previousSample;
             previousSample = sample;
-            setSample(data, i, (short) filteredPreviousSample);
+            setSample(result, i, (short) filteredPreviousSample);
         }
+        return result;
     }
 
     @Override

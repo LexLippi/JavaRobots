@@ -23,12 +23,13 @@ public class LevelPassFilter extends SoundFilter {
     }
 
     @Override
-    void filter(byte[] data) {
+    byte[] getFilteredData(byte[] data) {
+        var result = new byte[data.length];
         for (var i = 0; i < data.length; i += 2) {
             var oldSample = getSample(data, i);
-            var newSample = updateSample(oldSample);
-            setSample(data, i, newSample);
+            setSample(result, i, updateSample(oldSample));
         }
+        return result;
     }
 
     @Override
