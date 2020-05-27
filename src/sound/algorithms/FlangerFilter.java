@@ -2,8 +2,9 @@ package sound.algorithms;
 
 import sound.Song;
 import javax.sound.sampled.AudioFormat;
+import java.io.Serializable;
 
-public class FlangerFilter extends SoundFilter{
+public class FlangerFilter extends SoundFilter implements Serializable {
     private float wet;
     private float dry;
     private float[] flangerBuffer;

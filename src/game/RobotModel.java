@@ -17,17 +17,19 @@ public class RobotModel extends Observable implements Serializable, Observer {
     private static final double maxVelocity = 0.1;
     private static final double maxAngularVelocity = 0.001;
     private double distanceToTarget;
-    private volatile RobotState robotState;
+    private final Cell[][] field = new Cell[3][3];
+    private Cell currentCell;
+    private GameType gameType;
 
     private static Timer createTimer()
     {
         return new Timer("events generator", true);
     }
 
-    public RobotModel(TargetModel targetModel) {
+    public RobotModel(TargetModel targetModel, GameType gameType) {
+        this.gameType = gameType;
         this.targetModel = targetModel;
         this.targetModel.addObserver(this);
-        robotState = RobotState.SHUTDOWN;
         distanceToTarget = distance(targetModel.getTargetPositionX(), targetModel.getTargetPositionY(),
                 m_robotPositionX, m_robotPositionY);
         m_timer.schedule(new TimerTask()
@@ -70,15 +72,8 @@ public class RobotModel extends Observable implements Serializable, Observer {
         return m_robotDirection;
     }
 
-    private void notifyObserversWithState() {
-        notifyObservers(robotState);
-        setChanged();
-    }
-
-    private void updateDistanceToTarget() {
-        distanceToTarget = robotState == RobotState.MOVE  ?
-                distance(targetModel.getTargetPositionX(), targetModel.getTargetPositionY(), m_robotPositionX,
-                        m_robotPositionY) : 0;
+    private void updateDistanceToTarget(double distance) {
+        distanceToTarget = distance >= 0.5 ? distance : 0;
     }
 
     public double getDistanceToTarget() {
@@ -87,34 +82,48 @@ public class RobotModel extends Observable implements Serializable, Observer {
 
     protected void onModelUpdateEvent()
     {
-        double distance = distance(targetModel.getTargetPositionX(), targetModel.getTargetPositionY(),
-                m_robotPositionX, m_robotPositionY);
-        updateDistanceToTarget();
-        if (distance < 0.5) {
-            if (robotState == RobotState.MOVE) {
-                robotState = RobotState.SHUTDOWN;
-            }
-            else if (robotState == RobotState.SHUTDOWN) {
-                robotState = RobotState.STAND;
-            }
-            notifyObserversWithState();
+        updateDistanceToTarget(distance(targetModel.getTargetPositionX(), targetModel.getTargetPositionY(),
+                m_robotPositionX, m_robotPositionY));
+        if (Double.compare(distanceToTarget, 0) == 0) {
+            notifyWithGameType(GameType.POINT);
             return;
         }
-        double angleToTarget = angleTo(m_robotPositionX, m_robotPositionY,
+        var angleToTarget = angleTo(m_robotPositionX, m_robotPositionY,
                 targetModel.getTargetPositionX(), targetModel.getTargetPositionY());
-        double angularVelocity = 0;
-        if (angleToTarget > m_robotDirection)
-        {
-            angularVelocity = maxAngularVelocity;
-        }
-        if (angleToTarget < m_robotDirection)
-        {
-            angularVelocity = -maxAngularVelocity;
-        }
-        robotState = RobotState.MOVE;
+        var angularVelocity = angleToTarget > m_robotDirection ? maxAngularVelocity :
+                angleToTarget < m_robotDirection ? -maxAngularVelocity : 0;
         moveRobot(maxVelocity, angularVelocity, 10);
-        notifyObservers(robotState);
-        setChanged();
+        notifyWithGameType(GameType.BLOCKS);
+    }
+
+    private void notifyWithGameType(GameType gameType) {
+        if (this.gameType == gameType) {
+            notifyIfChangeCell();
+        }
+        else {
+            notifyObservers();
+            setChanged();
+        }
+    }
+
+    private void notifyIfChangeCell() {
+        var cell = checkInWhichCellRobotLocates();
+        if (cell != currentCell) {
+            currentCell = cell;
+            notifyObservers(cell.getFilterName());
+            setChanged();
+        }
+    }
+
+    private Cell checkInWhichCellRobotLocates() {
+        for (Cell[] cells : field) {
+            for (Cell cell : cells) {
+                if (cell.isPointInCell(m_robotPositionX, m_robotPositionY)) {
+                    return cell;
+                }
+            }
+        }
+        return currentCell;
     }
 
     private void moveRobot(double velocity, double angularVelocity, double duration)
@@ -193,6 +202,7 @@ public class RobotModel extends Observable implements Serializable, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        updateDistanceToTarget();
+        updateDistanceToTarget(distance(targetModel.getTargetPositionX(), targetModel.getTargetPositionY(),
+                m_robotPositionX, m_robotPositionY));
     }
 }

@@ -1,11 +1,11 @@
 package gui;
 
+import game.FilterName;
 import game.RobotModel;
-import game.RobotState;
 import game.TargetModel;
 import sound.MusicPlayer;
+import sound.algorithms.FilterMode;
 
-import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -13,14 +13,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -30,13 +24,16 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
     private RobotModel robotModel;
     private transient MusicPlayer musicPlayer;
     protected ClosingHandler closingHandler;
+    private FilterMode filterMode;
 
     public GameVisualizer(RobotModel robotModel, TargetModel targetModel)
     {
+        filterMode = FilterMode.CONSISTENT;
         this.targetModel = targetModel;
         this.robotModel = robotModel;
         this.robotModel.setFieldSize(getWidth(), getHeight());
         closingHandler = new ClosingHandler();
+        // TODO: change song
         var url = getClass().getResource("/robotSounds/RobotMoving.wav");
         musicPlayer = new MusicPlayer((new URL[] {url}));
         targetModel.addObserver(this);
@@ -47,12 +44,6 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
             public void mouseClicked(MouseEvent e)
             {
                 targetModel.setTargetPosition(e.getPoint());
-                if (!Objects.equals(musicPlayer.getCurrentSongName(), "RobotMoving.wav")) {
-                    musicPlayer.deleteAllSongs();
-                    var url = getClass().getResource("/robotSounds/RobotMoving.wav");
-                    musicPlayer.addNewSongs((new URL[] {url}));
-                    musicPlayer.play();
-                }
             }
         });
         addComponentListener(new ResizeListener());
@@ -85,10 +76,6 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
             public void mouseClicked(MouseEvent e)
             {
                 targetModel.setTargetPosition(e.getPoint());
-                musicPlayer.deleteAllSongs();
-                var url = getClass().getResource("/robotSounds/RobotMoving.wav");
-                musicPlayer.addNewSongs((new URL[] {url}));
-                musicPlayer.play();
             }
         });
         setDoubleBuffered(true);
@@ -152,22 +139,8 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
             onRedrawEvent();
             return;
         }
-        var robotState = (RobotState)state;
-        switch (robotState) {
-            case MOVE:
-            case STAND:
-                onRedrawEvent();
-                break;
-            case SHUTDOWN:
-                if(!musicPlayer.getPaused()) {
-                    musicPlayer.deleteAllSongs();
-                    var url = getClass().getResource("/robotSounds/RobotStanding.wav");
-                    musicPlayer.addNewSongs((new URL[]{url}));
-                    musicPlayer.play();
-                }
-                break;
-            default:
-                throw new IllegalStateException("Update GameVisualizer received illegal robot state");
-        }
+        var filterName = (FilterName) state;
+        musicPlayer.transformateCurrentSong(filterName, filterMode);
+        onRedrawEvent();
     }
 }

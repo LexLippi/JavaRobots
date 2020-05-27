@@ -2,8 +2,9 @@ package sound.algorithms;
 
 import sound.Song;
 import javax.sound.sampled.AudioFormat;
+import java.io.Serializable;
 
-public class SlowingFilter extends SoundFilter {
+public class SlowingFilter extends SoundFilter implements Serializable {
     public int moderator;
 
     public SlowingFilter(int moderator) {

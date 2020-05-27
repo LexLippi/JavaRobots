@@ -2,8 +2,9 @@ package sound.algorithms;
 
 import sound.Song;
 import javax.sound.sampled.AudioFormat;
+import java.io.Serializable;
 
-public class DistortionFilter extends SoundFilter {
+public class DistortionFilter extends SoundFilter implements Serializable {
     private float multiplier;
     private float resonance;
 

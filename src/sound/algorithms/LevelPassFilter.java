@@ -2,8 +2,9 @@ package sound.algorithms;
 
 import sound.Song;
 import javax.sound.sampled.AudioFormat;
+import java.io.Serializable;
 
-public class LevelPassFilter extends SoundFilter {
+public class LevelPassFilter extends SoundFilter implements Serializable {
     private float smoothCoeff;
     private float[] smoothedCoeffForInput = new float[2];
     private float[] smoothedCoeffForOutput = new float[2];

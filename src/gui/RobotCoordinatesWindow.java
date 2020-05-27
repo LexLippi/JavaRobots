@@ -1,8 +1,6 @@
 package gui;
 
 import game.RobotModel;
-import game.RobotState;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
@@ -43,18 +41,8 @@ public class RobotCoordinatesWindow extends JInternalFrame implements Serializab
 
     @Override
     public void update(Observable observable, Object o) {
-        var robotState = (RobotState)o;
-        switch (robotState) {
-            case MOVE:
-            case SHUTDOWN:
-                robotCoordinates.setValueAt(robotModel.getRobotPositionX(), 0, 1);
-                robotCoordinates.setValueAt(robotModel.getRobotPositionY(), 0, 2);
-                break;
-            case STAND:
-                break;
-            default:
-                throw new IllegalStateException("Update GameVisualizer received illegal robot state");
-        }
+        robotCoordinates.setValueAt(robotModel.getRobotPositionX(), 0, 1);
+        robotCoordinates.setValueAt(robotModel.getRobotPositionY(), 0, 2);
     }
 
     @Override

@@ -2,8 +2,9 @@ package sound.algorithms;
 
 import sound.Song;
 import javax.sound.sampled.AudioFormat;
+import java.io.Serializable;
 
-public class AcceleratingFilter extends SoundFilter {
+public class AcceleratingFilter extends SoundFilter implements Serializable {
     private int accelerator;
 
     public AcceleratingFilter(int accelerator) {

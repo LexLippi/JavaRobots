@@ -2,8 +2,9 @@ package sound.algorithms;
 
 import sound.Song;
 import javax.sound.sampled.AudioFormat;
+import java.io.Serializable;
 
-public class AllPassFilter extends SoundFilter{
+public class AllPassFilter extends SoundFilter implements Serializable {
     private float gainValue;
     private float previousSample;
     private float filteredPreviousSample;

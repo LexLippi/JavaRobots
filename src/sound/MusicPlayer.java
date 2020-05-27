@@ -1,5 +1,8 @@
 package sound;
 
+import game.FilterName;
+import sound.algorithms.*;
+
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
@@ -7,10 +10,12 @@ import java.util.Arrays;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.TimeUnit;
 
 public class MusicPlayer extends Observable {
+    private final ConcurrentHashMap<FilterName, ISoundFilter> nameToFilter = new ConcurrentHashMap<>();
     private ConcurrentLinkedDeque<Song> songs = new ConcurrentLinkedDeque<>();
     public FloatControl volumeLevel;
     private Clip clip;
@@ -19,11 +24,14 @@ public class MusicPlayer extends Observable {
     private String currentSongName;
     private final Timer timer = new Timer("events generator", true);;
     private Boolean isPaused = false;
+    private Song startSong;
 
     public MusicPlayer(URL[] urls) {
         for (var url: urls) {
             songs.add(new Song(url));
         }
+        startSong = songs.peek();
+        createNameToFilterMap();
         currentSongName = songs.peek().getSongName();
         createNewClip();
         timer.schedule(new TimerTask()
@@ -37,6 +45,7 @@ public class MusicPlayer extends Observable {
     }
 
     public MusicPlayer(Song[] songs) {
+        createNameToFilterMap();
         this.songs.addAll(Arrays.asList(songs));
         currentSongName = this.songs.peek().getSongName();
         createNewClip();
@@ -48,6 +57,19 @@ public class MusicPlayer extends Observable {
                 changeTime();
             }
         }, 0, 20);
+    }
+
+    private void createNameToFilterMap() {
+        nameToFilter.put(FilterName.ACCELERATING, new AcceleratingFilter(2));
+        nameToFilter.put(FilterName.SLOWING, new SlowingFilter(2));
+        nameToFilter.put(FilterName.ECHO, new EchoFilter(11025,.6f));
+        nameToFilter.put(FilterName.ALLPASS, new AllPassFilter(.8f));
+        nameToFilter.put(FilterName.DISTORTION, new DistortionFilter(1f/3f, 1f/0x7fff));
+        nameToFilter.put(FilterName.FLANGER, new FlangerFilter(100, .6f));
+        nameToFilter.put(FilterName.HIGHPASS,
+                new LevelPassFilter(20000, LevelPassFilter.PassType.HIGHPASS, 1f));
+        nameToFilter.put(FilterName.LOWPASS,
+                new LevelPassFilter(20000, LevelPassFilter.PassType.LOWPASS, 1f));
     }
 
     private void changeTime() {
@@ -185,12 +207,25 @@ public class MusicPlayer extends Observable {
         try {
             clip = AudioSystem.getClip();
             clip.open(songs.peek().getSong());
-            System.out.println(this.songs);
             clip.addLineListener(lineListener);
             volumeLevel = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         } catch (LineUnavailableException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void transformateCurrentSong(FilterName filterName, FilterMode filterMode) {
+        pause();
+        if (!nameToFilter.containsKey(filterName)) {
+            play();
+            return;
+        }
+        var filter = nameToFilter.get(filterName);
+        var song = filterMode == FilterMode.CONSISTENT ? songs.poll() : startSong;
+        var newSong = filter.transformateSong(song);
+        songs.add(newSong);
+        createNewClip();
+        play();
     }
 
     private class Listener implements LineListener {

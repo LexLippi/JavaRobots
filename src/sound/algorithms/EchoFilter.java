@@ -2,8 +2,9 @@ package sound.algorithms;
 
 import sound.Song;
 import javax.sound.sampled.AudioFormat;
+import java.io.Serializable;
 
-public class EchoFilter extends SoundFilter {
+public class EchoFilter extends SoundFilter implements Serializable {
     private short[] delayBuffer;
     private int delayBufferPos;
     private float decay;
