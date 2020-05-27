@@ -13,7 +13,7 @@ public class AcceleratingFilter extends SoundFilter {
     @Override
     byte[] getFilteredData(byte[] data) {
         var result = new byte[data.length / accelerator];
-        for (var i = 0; i < result.length; i += 2) {
+        for (var i = 0; i < result.length; i += sampleSize) {
             setSample(result, i, getSample(data, accelerator * i));
         }
         return result;

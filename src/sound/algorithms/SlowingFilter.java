@@ -13,7 +13,7 @@ public class SlowingFilter extends SoundFilter {
     @Override
     byte[] getFilteredData(byte[] data) {
         var result = new byte[data.length * moderator];
-        for (var i = 0; i < result.length; i += 2 * moderator) {
+        for (var i = 0; i < result.length; i += sampleSize * moderator) {
             setSample(result, i, getSample(data, i / moderator));
         }
         return result;

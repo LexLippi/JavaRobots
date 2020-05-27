@@ -4,6 +4,9 @@ import sound.Song;
 import javax.sound.sampled.AudioFormat;
 
 abstract class SoundFilter implements ISoundFilter {
+    protected int sampleSize = 2;
+    protected int sampleRate = 44100;
+
     abstract byte[] getFilteredData(byte[] data);
 
     abstract Song getSongFromBytes(byte[] bytes, AudioFormat format, String songName);

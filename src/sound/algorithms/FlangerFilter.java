@@ -8,7 +8,7 @@ public class FlangerFilter extends SoundFilter{
     private float dry;
     private float[] flangerBuffer;
 
-    public FlangerFilter(int sampleRate, int maxFlangerLength, float wet) {
+    public FlangerFilter(int maxFlangerLength, float wet) {
         this.wet = wet;
         this.dry = 1 - wet;
         flangerBuffer = new float[sampleRate * maxFlangerLength];
@@ -17,7 +17,7 @@ public class FlangerFilter extends SoundFilter{
     @Override
     byte[] getFilteredData(byte[] data) {
         var result = new byte[data.length];
-        for (var i = 2; i < data.length; i += 2) {
+        for (var i = 2; i < data.length; i += sampleSize) {
             var sample = getSample(data, i);
             flangerBuffer[(i / 2) % flangerBuffer.length] = sample;
             sample = (short) (dry * sample + flangerBuffer[(i - 1) % flangerBuffer.length] * wet);

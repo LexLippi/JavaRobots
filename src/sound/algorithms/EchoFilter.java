@@ -16,7 +16,7 @@ public class EchoFilter extends SoundFilter {
     @Override
     protected byte[] getFilteredData(byte[] data) {
         var result = new byte[data.length];
-        for (var i = 0; i < data.length; i += 2) {
+        for (var i = 0; i < data.length; i += sampleSize) {
             var oldSample = getSample(data, i);
             var newSample = (short) (oldSample + decay * delayBuffer[delayBufferPos]);
             setSample(result, i, newSample);

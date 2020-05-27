@@ -15,7 +15,7 @@ public class DistortionFilter extends SoundFilter {
     @Override
     byte[] getFilteredData(byte[] data) {
         var result = new byte[data.length];
-        for (var i = 0; i < data.length; i += 2) {
+        for (var i = 0; i < data.length; i += sampleSize) {
             var resultSample = 0.0;
             var inputSample = getSample(data, i);
             var normalizeInputSample = multiplier * inputSample;

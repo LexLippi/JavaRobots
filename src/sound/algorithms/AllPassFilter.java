@@ -15,7 +15,7 @@ public class AllPassFilter extends SoundFilter{
     @Override
     byte[] getFilteredData(byte[] data) {
         var result = new byte[data.length];
-        for (var i = 0; i < data.length; i += 2) {
+        for (var i = 0; i < data.length; i += sampleSize) {
             var sample = getSample(data, i);
             filteredPreviousSample = (gainValue * (filteredPreviousSample - sample)) + previousSample;
             previousSample = sample;
