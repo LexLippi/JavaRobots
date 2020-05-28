@@ -5,8 +5,8 @@ import java.io.Serializable;
 import java.util.Observable;
 
 public class TargetModel extends Observable implements Serializable {
-    private volatile int m_targetPositionX = 150;
-    private volatile int m_targetPositionY = 100;
+    private volatile int m_targetPositionX = 205;
+    private volatile int m_targetPositionY = 205;
 
     public void setTargetPosition(Point p)
     {

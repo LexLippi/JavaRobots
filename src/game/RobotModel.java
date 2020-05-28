@@ -11,8 +11,8 @@ public class RobotModel extends Observable implements Serializable, Observer {
     private volatile double m_fieldWidth = 100f;
     private volatile double m_fieldHeight = 100f;
     private volatile TargetModel targetModel;
-    private volatile double m_robotPositionX = 100;
-    private volatile double m_robotPositionY = 100;
+    private volatile double m_robotPositionX = 205;
+    private volatile double m_robotPositionY = 205;
     private volatile double m_robotDirection = 0;
     private static final double maxVelocity = 0.1;
     private static final double maxAngularVelocity = 0.001;
