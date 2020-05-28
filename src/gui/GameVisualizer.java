@@ -3,6 +3,7 @@ package gui;
 import game.FilterName;
 import game.RobotModel;
 import game.TargetModel;
+import sound.Equaliser;
 import sound.MusicPlayer;
 import sound.algorithms.FilterMode;
 
@@ -24,11 +25,10 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
     private RobotModel robotModel;
     private transient MusicPlayer musicPlayer;
     protected ClosingHandler closingHandler;
-    private FilterMode filterMode;
+    private Equaliser equaliser;
 
     public GameVisualizer(RobotModel robotModel, TargetModel targetModel, FilterMode filter)
     {
-        filterMode = filter;
         this.targetModel = targetModel;
         this.robotModel = robotModel;
         this.robotModel.setFieldSize(getWidth(), getHeight());
@@ -36,6 +36,7 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
         // TODO: change song
         var url = getClass().getResource("/robotSounds/RobotMoving.wav");
         musicPlayer = new MusicPlayer((new URL[] {url}));
+        equaliser = new Equaliser(filter, musicPlayer);
         targetModel.addObserver(this);
         robotModel.addObserver(this);
         addMouseListener(new MouseAdapter()
@@ -67,6 +68,7 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
         musicPlayer = new MusicPlayer((new URL[] {url}));
         musicPlayer.play();
         musicPlayer.setVolumeLevel(0.9f);
+        equaliser.setMetadata(musicPlayer);
         robotModel.setMetadata();
         targetModel.addObserver(this);
         robotModel.addObserver(this);
@@ -140,7 +142,6 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
             return;
         }
         onRedrawEvent();
-        var filterName = (FilterName) state;
-        musicPlayer.transformateCurrentSong(filterName, filterMode);
+        equaliser.transformateCurrentSong((FilterName) state);
     }
 }
