@@ -126,6 +126,10 @@ public class RobotModel extends Observable implements Serializable, Observer {
             notifyObservers(cell.getFilterName());
             setChanged();
         }
+        else {
+            notifyObservers();
+            setChanged();
+        }
     }
 
     private Cell checkInWhichCellRobotLocates() {
