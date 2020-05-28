@@ -21,9 +21,7 @@ public class GameWindow extends JInternalFrame implements Serializable, Reopenab
         super(bundle.getString("gameFieldKey"), true, true, true, true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         m_visualizer = new GameVisualizer(robotModel, targetModel, filterMode);
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(m_visualizer, BorderLayout.CENTER);
-        getContentPane().add(panel);
+        initComponents();
         createNewClosingHandler(bundle);
         pack();
     }
@@ -58,20 +56,22 @@ public class GameWindow extends JInternalFrame implements Serializable, Reopenab
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - unknown
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(m_visualizer, BorderLayout.CENTER);
+        getContentPane().add(panel);
         panel1 = new JPanel();
-        panel2 = new JPanel();
-        panel3 = new JPanel();
         panel4 = new JPanel();
         panel5 = new JPanel();
-        panel6 = new JPanel();
-        panel7 = new JPanel();
+        panel2 = new JPanel();
         panel8 = new JPanel();
         panel9 = new JPanel();
+        panel3 = new JPanel();
+        panel6 = new JPanel();
+        panel7 = new JPanel();
+        m_visualizer.setLayout(new GridLayout(3, 3));
 
         //======== this ========
         setVisible(true);
-        var contentPane = getContentPane();
-        contentPane.setLayout(null);
 
         //======== panel1 ========
         {
@@ -94,56 +94,7 @@ public class GameWindow extends JInternalFrame implements Serializable, Reopenab
                 panel1.setPreferredSize(preferredSize);
             }
         }
-        contentPane.add(panel1);
-        panel1.setBounds(0, 0, 130, 130);
-
-        //======== panel2 ========
-        {
-            panel2.setBackground(new Color(255, 153, 255));
-            panel2.setBorder(new MatteBorder(1, 2, 1, 1, Color.darkGray));
-            panel2.setLayout(null);
-
-            {
-                // compute preferred size
-                Dimension preferredSize = new Dimension();
-                for(int i = 0; i < panel2.getComponentCount(); i++) {
-                    Rectangle bounds = panel2.getComponent(i).getBounds();
-                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
-                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
-                }
-                Insets insets = panel2.getInsets();
-                preferredSize.width += insets.right;
-                preferredSize.height += insets.bottom;
-                panel2.setMinimumSize(preferredSize);
-                panel2.setPreferredSize(preferredSize);
-            }
-        }
-        contentPane.add(panel2);
-        panel2.setBounds(0, 130, 130, 130);
-
-        //======== panel3 ========
-        {
-            panel3.setBackground(new Color(204, 255, 153));
-            panel3.setBorder(new MatteBorder(1, 2, 2, 1, Color.darkGray));
-            panel3.setLayout(null);
-
-            {
-                // compute preferred size
-                Dimension preferredSize = new Dimension();
-                for(int i = 0; i < panel3.getComponentCount(); i++) {
-                    Rectangle bounds = panel3.getComponent(i).getBounds();
-                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
-                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
-                }
-                Insets insets = panel3.getInsets();
-                preferredSize.width += insets.right;
-                preferredSize.height += insets.bottom;
-                panel3.setMinimumSize(preferredSize);
-                panel3.setPreferredSize(preferredSize);
-            }
-        }
-        contentPane.add(panel3);
-        panel3.setBounds(0, 260, 130, 130);
+        m_visualizer.add(panel1);
 
         //======== panel4 ========
         {
@@ -166,8 +117,7 @@ public class GameWindow extends JInternalFrame implements Serializable, Reopenab
                 panel4.setPreferredSize(preferredSize);
             }
         }
-        contentPane.add(panel4);
-        panel4.setBounds(130, 0, 130, 130);
+        m_visualizer.add(panel4);
 
         //======== panel5 ========
         {
@@ -190,56 +140,30 @@ public class GameWindow extends JInternalFrame implements Serializable, Reopenab
                 panel5.setPreferredSize(preferredSize);
             }
         }
-        contentPane.add(panel5);
-        panel5.setBounds(260, 0, 130, 130);
+        m_visualizer.add(panel5);
 
-        //======== panel6 ========
+        //======== panel2 ========
         {
-            panel6.setBackground(new Color(153, 255, 153));
-            panel6.setBorder(new MatteBorder(1, 1, 2, 1, Color.darkGray));
-            panel6.setLayout(null);
+            panel2.setBackground(new Color(255, 153, 255));
+            panel2.setBorder(new MatteBorder(1, 2, 1, 1, Color.darkGray));
+            panel2.setLayout(null);
 
             {
                 // compute preferred size
                 Dimension preferredSize = new Dimension();
-                for(int i = 0; i < panel6.getComponentCount(); i++) {
-                    Rectangle bounds = panel6.getComponent(i).getBounds();
+                for(int i = 0; i < panel2.getComponentCount(); i++) {
+                    Rectangle bounds = panel2.getComponent(i).getBounds();
                     preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                     preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
                 }
-                Insets insets = panel6.getInsets();
+                Insets insets = panel2.getInsets();
                 preferredSize.width += insets.right;
                 preferredSize.height += insets.bottom;
-                panel6.setMinimumSize(preferredSize);
-                panel6.setPreferredSize(preferredSize);
+                panel2.setMinimumSize(preferredSize);
+                panel2.setPreferredSize(preferredSize);
             }
         }
-        contentPane.add(panel6);
-        panel6.setBounds(130, 260, 130, 130);
-
-        //======== panel7 ========
-        {
-            panel7.setBackground(new Color(102, 255, 153));
-            panel7.setBorder(new MatteBorder(1, 1, 2, 2, Color.darkGray));
-            panel7.setLayout(null);
-
-            {
-                // compute preferred size
-                Dimension preferredSize = new Dimension();
-                for(int i = 0; i < panel7.getComponentCount(); i++) {
-                    Rectangle bounds = panel7.getComponent(i).getBounds();
-                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
-                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
-                }
-                Insets insets = panel7.getInsets();
-                preferredSize.width += insets.right;
-                preferredSize.height += insets.bottom;
-                panel7.setMinimumSize(preferredSize);
-                panel7.setPreferredSize(preferredSize);
-            }
-        }
-        contentPane.add(panel7);
-        panel7.setBounds(260, 260, 130, 130);
+        m_visualizer.add(panel2);
 
         //======== panel8 ========
         {
@@ -262,8 +186,7 @@ public class GameWindow extends JInternalFrame implements Serializable, Reopenab
                 panel8.setPreferredSize(preferredSize);
             }
         }
-        contentPane.add(panel8);
-        panel8.setBounds(130, 130, 130, 130);
+        m_visualizer.add(panel8);
 
         //======== panel9 ========
         {
@@ -286,36 +209,89 @@ public class GameWindow extends JInternalFrame implements Serializable, Reopenab
                 panel9.setPreferredSize(preferredSize);
             }
         }
-        contentPane.add(panel9);
-        panel9.setBounds(260, 130, 130, 130);
+        m_visualizer.add(panel9);
 
+        //======== panel3 ========
         {
-            // compute preferred size
-            Dimension preferredSize = new Dimension();
-            for(int i = 0; i < contentPane.getComponentCount(); i++) {
-                Rectangle bounds = contentPane.getComponent(i).getBounds();
-                preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
-                preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+            panel3.setBackground(new Color(204, 255, 153));
+            panel3.setBorder(new MatteBorder(1, 2, 2, 1, Color.darkGray));
+            panel3.setLayout(null);
+
+            {
+                // compute preferred size
+                Dimension preferredSize = new Dimension();
+                for(int i = 0; i < panel3.getComponentCount(); i++) {
+                    Rectangle bounds = panel3.getComponent(i).getBounds();
+                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+                }
+                Insets insets = panel3.getInsets();
+                preferredSize.width += insets.right;
+                preferredSize.height += insets.bottom;
+                panel3.setMinimumSize(preferredSize);
+                panel3.setPreferredSize(preferredSize);
             }
-            Insets insets = contentPane.getInsets();
-            preferredSize.width += insets.right;
-            preferredSize.height += insets.bottom;
-            contentPane.setMinimumSize(preferredSize);
-            contentPane.setPreferredSize(preferredSize);
         }
+        m_visualizer.add(panel3);
+
+        //======== panel6 ========
+        {
+            panel6.setBackground(new Color(153, 255, 153));
+            panel6.setBorder(new MatteBorder(1, 1, 2, 1, Color.darkGray));
+            panel6.setLayout(null);
+
+            {
+                // compute preferred size
+                Dimension preferredSize = new Dimension();
+                for(int i = 0; i < panel6.getComponentCount(); i++) {
+                    Rectangle bounds = panel6.getComponent(i).getBounds();
+                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+                }
+                Insets insets = panel6.getInsets();
+                preferredSize.width += insets.right;
+                preferredSize.height += insets.bottom;
+                panel6.setMinimumSize(preferredSize);
+                panel6.setPreferredSize(preferredSize);
+            }
+        }
+        m_visualizer.add(panel6);
+
+        //======== panel7 ========
+        {
+            panel7.setBackground(new Color(102, 255, 153));
+            panel7.setBorder(new MatteBorder(1, 1, 2, 2, Color.darkGray));
+            panel7.setLayout(null);
+
+            {
+                // compute preferred size
+                Dimension preferredSize = new Dimension();
+                for(int i = 0; i < panel7.getComponentCount(); i++) {
+                    Rectangle bounds = panel7.getComponent(i).getBounds();
+                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+                }
+                Insets insets = panel7.getInsets();
+                preferredSize.width += insets.right;
+                preferredSize.height += insets.bottom;
+                panel7.setMinimumSize(preferredSize);
+                panel7.setPreferredSize(preferredSize);
+            }
+        }
+        m_visualizer.add(panel7);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     // Generated using JFormDesigner Evaluation license - unknown
     private JPanel panel1;
-    private JPanel panel2;
-    private JPanel panel3;
     private JPanel panel4;
     private JPanel panel5;
-    private JPanel panel6;
-    private JPanel panel7;
+    private JPanel panel2;
     private JPanel panel8;
     private JPanel panel9;
+    private JPanel panel3;
+    private JPanel panel6;
+    private JPanel panel7;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
