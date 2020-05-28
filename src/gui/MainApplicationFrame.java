@@ -76,7 +76,7 @@ public class MainApplicationFrame extends JFrame
         }
         if (nextLocale != null){
             ResourceBundle prevBundle = this.bundle;
-            ResourceBundle nextBundle = ResourceBundle.getBundle("Bundles.Bundle", nextLocale);
+            ResourceBundle nextBundle = ResourceBundle.getBundle("bundles.Bundle", nextLocale);
             if (!prevBundle.equals(nextBundle)){
                 logWindow.changeLanguage(nextBundle);
                 gameWindow.changeLanguage(nextBundle);

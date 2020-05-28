@@ -54,7 +54,13 @@ public class Bundle_en extends ListResourceBundle implements Serializable{
             {"closeDistanceWindow", "Close distance window"},
             {"notCloseDistanceWindow", "Don't close distance window"},
             {"closeCoordinatesWindow", "Close coordinates window"},
-            {"notCloseCoordinatesWindow", "Don't close coordinates window"}
+            {"notCloseCoordinatesWindow", "Don't close coordinates window"},
+            {"getGameTypeMessage", "Choose game type"},
+            {"getBlocks", "Blocks"},
+            {"getPoint", "Point"},
+            {"getFilterModeMessage", "Choose filter mode"},
+            {"getConsistent", "Consistent"},
+            {"getParallel", "Parallel"}
 
     };
 

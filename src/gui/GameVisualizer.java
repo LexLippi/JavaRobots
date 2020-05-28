@@ -26,9 +26,9 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
     protected ClosingHandler closingHandler;
     private FilterMode filterMode;
 
-    public GameVisualizer(RobotModel robotModel, TargetModel targetModel)
+    public GameVisualizer(RobotModel robotModel, TargetModel targetModel, FilterMode filter)
     {
-        filterMode = FilterMode.CONSISTENT;
+        filterMode = filter;
         this.targetModel = targetModel;
         this.robotModel = robotModel;
         this.robotModel.setFieldSize(getWidth(), getHeight());

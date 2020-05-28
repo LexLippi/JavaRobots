@@ -54,7 +54,13 @@ public class Bundle_ru extends ListResourceBundle implements Serializable{
             {"closeDistanceWindow", "Закрыто окно \"Расстояние до цели\""},
             {"notCloseDistanceWindow", "Не закрыто окно \"Расстояние до цели\""},
             {"closeCoordinatesWindow", "Закрыто окно \"Координаты робота\""},
-            {"notCloseCoordinatesWindow", "Не закрыто окно \"Координаты робота\""}
+            {"notCloseCoordinatesWindow", "Не закрыто окно \"Координаты робота\""},
+            {"getGameTypeMessage", "Выберите режим игры"},
+            {"getBlocks", "Блочный"},
+            {"getPoint", "Точечный"},
+            {"getFilterModeMessage", "Выберите режим преобразования"},
+            {"getConsistent", "Последовательный"},
+            {"getParallel", "Параллельный"}
     };
 
     @Override
