@@ -27,6 +27,7 @@ public class RobotModel extends Observable implements Serializable, Observer {
     }
 
     public RobotModel(TargetModel targetModel, GameType gameType) {
+        createField();
         this.gameType = gameType;
         this.targetModel = targetModel;
         this.targetModel.addObserver(this);
@@ -40,6 +41,18 @@ public class RobotModel extends Observable implements Serializable, Observer {
                 onModelUpdateEvent();
             }
         }, 0, 20);
+    }
+
+    private void createField() {
+        field[0][0] = new Cell(0, 0, 130, 130, FilterName.ACCELERATING);
+        field[0][1] = new Cell(130, 0, 260, 130, FilterName.ALLPASS);
+        field[0][2] = new Cell(260, 0, 390, 130, FilterName.DISTORTION);
+        field[1][0] = new Cell(0, 130, 130, 260, FilterName.ECHO);
+        field[1][1] = new Cell(130, 130, 260, 260, FilterName.NOTHING);
+        field[1][2] = new Cell(260, 130, 390, 260, FilterName.HIGHPASS);
+        field[2][0] = new Cell(0, 260, 130, 390, FilterName.LOWPASS);
+        field[2][1] = new Cell(130, 260, 260, 390, FilterName.FLANGER);
+        field[2][2] = new Cell(260, 260, 390, 390, FilterName.SLOWING);
     }
 
     public void setMetadata() {
