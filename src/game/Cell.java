@@ -1,6 +1,8 @@
 package game;
 
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable {
     private double leftUpperPositionX;
     private double leftUpperPositionY;
     private double rightDownPositionX;
