@@ -19,7 +19,6 @@ public class GameWindow extends JInternalFrame implements Serializable, Reopenab
     public GameWindow(ResourceBundle bundle, RobotModel robotModel, TargetModel targetModel, FilterMode filterMode)
     {
         super(bundle.getString("gameFieldKey"), true, true, true, true);
-        initComponents();
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         m_visualizer = new GameVisualizer(robotModel, targetModel, filterMode);
         initComponents();

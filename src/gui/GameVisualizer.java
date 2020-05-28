@@ -139,8 +139,8 @@ public class GameVisualizer extends JPanel implements Serializable, Observer
             onRedrawEvent();
             return;
         }
+        onRedrawEvent();
         var filterName = (FilterName) state;
         musicPlayer.transformateCurrentSong(filterName, filterMode);
-        onRedrawEvent();
     }
 }

@@ -221,7 +221,8 @@ public class MusicPlayer extends Observable {
             return;
         }
         var filter = nameToFilter.get(filterName);
-        var song = filterMode == FilterMode.CONSISTENT ? songs.poll() : startSong;
+        var currentSong = songs.poll();
+        var song = filterMode == FilterMode.CONSISTENT ? currentSong : startSong;
         var newSong = filter.transformateSong(song);
         songs.add(newSong);
         createNewClip();
